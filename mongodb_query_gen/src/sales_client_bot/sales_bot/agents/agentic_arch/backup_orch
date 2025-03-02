@@ -1,0 +1,111 @@
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__),'..', '..', '..', '..')))
+
+
+from agent_definitions import find_relevent_collection_agent,llm_config
+from mongo_schema_defs import schemas,get_schema_keys
+from autogen import ConversableAgent
+from mongo_ops import MongoOps
+from find_questions_from_text_agent import generate_questions_array, get_most_relevant_collections
+import streamlit as st
+
+
+
+def run_conversations(multi_question):
+    queries = []
+    questions = generate_questions_array(multi_question)
+    print('Questions', questions)
+    for i, question in enumerate(questions, 1):
+        print(f"Question: {question}")
+        collection_names = find_relevent_collection_agent.generate_reply(messages=[{
+            "role": "user", "content": question
+        }])
+
+        print(f"Relevant collections: {collection_names}")
+        collection_list = [name.strip() for name in collection_names.split(',')]
+        #print(f"Reevant collections: {collection_list}")
+
+        new_collections = []
+        # compare the collection_list with the schemas.keys to get 
+        # the relevant collections
+        for collection in collection_list:
+            if collection in get_schema_keys():
+                new_collections.append(collection)
+            else:
+                print("finding most relevant schema for collection: {collection}...")
+                ## find the most matching schema if one is not found
+                result = get_most_relevant_collections(collection,get_schema_keys())
+                print("new collection",result)
+
+
+        def generate_query_for_collection(collection: str):
+            prompt = '''Generate a MongoDB query for the '{collection}' collection based on this question: {question}. 
+                            Instructions:
+                            Analyze the Input: Understand the user’s intent from the given natural language query.
+                Identify Fields & Conditions: Extract relevant database fields, filters, and values.
+                Generate a Valid MongoDB Query: Output a well-structured JSON query that follows MongoDB’s syntax.
+                Ensure Accuracy: The generated query should be syntactically correct and match the user’s intent.
+                Optimize Conditions: Use operators like $gt, $lt, $in, $regex, $and, $or when necessary.
+                Also only return the generated mongo query without any additional text.
+                Only Use the below mongodb collection schema:
+
+            '''
+            prompt = prompt +  str(schemas[collection])
+
+            prompt = prompt + ''' . Return only the mongo query'''
+
+            generate_mongodb_query_agent = ConversableAgent(
+                name="relevant_collection_finder",
+                llm_config=llm_config,
+                system_message=prompt
+            ) 
+
+            #print(prompt)
+            print('--------------------------------')
+
+            mongo_query = generate_mongodb_query_agent.generate_reply(messages=[{
+                "role": "user", "content": question
+            }])
+
+
+            #print(mongo_query)
+            queries.append({"collection": collection, "query": mongo_query})
+
+        # Use a for loop instead of for_each (which is not a standard Python method)
+        for collection in collection_list:
+        # print(f"Generating query for collection: {collection}")
+            generate_query_for_collection(collection)
+
+        return queries
+
+def main():
+    question = ''' Find all clients who have a equities revenue greater than 1 million 
+    Also check if the client has  opportunities are in operational efficiency. '''
+    
+
+## add main method to run the program
+def main_ui():
+
+    st.title("MongoDB Query Generator")
+    user_question = st.text_area("Enter your question:", height=100)
+
+    if st.button("Generate Queries"):
+        if user_question:
+            queries = run_conversations(user_question)
+
+            st.subheader("Generated Queries:")
+            for query in queries:
+                st.write(f"Collection: {query['collection']}")
+                st.code(query['query'], language='json')
+                st.write("--------------------")
+
+                # Execute the query and display results
+                results = MongoOps.clean_and_execute_mongo_query(query['query'], query['collection'])
+                st.write("Query Results:")
+                st.json(results)
+                st.write("--------------------")
+        else:
+            st.warning("Please enter a question.")
+if __name__ == "__main__":
+    main_ui()

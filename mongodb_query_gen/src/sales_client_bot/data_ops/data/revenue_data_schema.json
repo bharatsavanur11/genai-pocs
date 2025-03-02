@@ -1,0 +1,13 @@
+{
+  "_id": "str",
+  "company": "str",
+  "client_id": "str",
+  "client_name": "str",
+  "currency": "str",
+  "year": "int",
+  "region": "str",
+  "last_updated": "str",
+  "equities": "Int64",
+  "derivatives": "Int64",
+  "prime_brokerage": "int"
+}

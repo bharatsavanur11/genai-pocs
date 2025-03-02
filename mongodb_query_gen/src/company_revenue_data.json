@@ -1,0 +1,2202 @@
+[
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6ed80"
+    },
+    "company": "Twitter",
+    "base_country": "France",
+    "region": "Europe",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-09-15T15:38:51.152644"
+    },
+    "revenue_2014": 283736101833,
+    "revenue_2015": 261928423075,
+    "revenue_2016": 288719579958,
+    "revenue_2017": 292094286279,
+    "revenue_2018": 252576893532,
+    "revenue_2019": 259959550348,
+    "revenue_2020": 233583857615,
+    "revenue_2021": 257358516054,
+    "revenue_2022": 267467119785,
+    "revenue_2023": 229189574356
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6ed81"
+    },
+    "company": "Twitter",
+    "base_country": "United States",
+    "region": "North America",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-08-24T15:38:51.153108"
+    },
+    "revenue_2014": 160081859963,
+    "revenue_2015": 191484948250,
+    "revenue_2016": 159069814816,
+    "revenue_2017": 159913115870,
+    "revenue_2018": 163977518098,
+    "revenue_2019": 183798940110,
+    "revenue_2020": 158492982328,
+    "revenue_2021": 173943191555,
+    "revenue_2022": 155994820963,
+    "revenue_2023": 186858449182
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6ed82"
+    },
+    "company": "Tesla",
+    "base_country": "Australia",
+    "region": "Oceania",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-10-06T15:38:51.153137"
+    },
+    "revenue_2014": 237545374610,
+    "revenue_2015": 260985682536,
+    "revenue_2016": 261061284617,
+    "revenue_2017": 259612963187,
+    "revenue_2018": 270555189203,
+    "revenue_2019": 265194559759,
+    "revenue_2020": 295857323904,
+    "revenue_2021": 291180417342,
+    "revenue_2022": 277320170526,
+    "revenue_2023": 290852999590
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6ed83"
+    },
+    "company": "Salesforce",
+    "base_country": "China",
+    "region": "Asia",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2025-01-01T15:38:51.153167"
+    },
+    "revenue_2014": 16655417541,
+    "revenue_2015": 17745750482,
+    "revenue_2016": 17700029636,
+    "revenue_2017": 17919179290,
+    "revenue_2018": 17492845452,
+    "revenue_2019": 16051266727,
+    "revenue_2020": 16664250824,
+    "revenue_2021": 17319031355,
+    "revenue_2022": 16525324088,
+    "revenue_2023": 17779334105
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6ed84"
+    },
+    "company": "Airbnb",
+    "base_country": "Australia",
+    "region": "Oceania",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-05-16T15:38:51.153190"
+    },
+    "revenue_2014": 175131621123,
+    "revenue_2015": 149454452707,
+    "revenue_2016": 162905332366,
+    "revenue_2017": 182325383492,
+    "revenue_2018": 158770144819,
+    "revenue_2019": 155433511110,
+    "revenue_2020": 187638355324,
+    "revenue_2021": 151311250332,
+    "revenue_2022": 185025132915,
+    "revenue_2023": 191327039155
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6ed85"
+    },
+    "company": "Apple",
+    "base_country": "United States",
+    "region": "North America",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-08-17T15:38:51.153216"
+    },
+    "revenue_2014": 53965695057,
+    "revenue_2015": 54404471437,
+    "revenue_2016": 68328467415,
+    "revenue_2017": 61659888271,
+    "revenue_2018": 63273849005,
+    "revenue_2019": 56545470271,
+    "revenue_2020": 53303794064,
+    "revenue_2021": 55657856901,
+    "revenue_2022": 61925600739,
+    "revenue_2023": 63722426769
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6ed86"
+    },
+    "company": "Oracle",
+    "base_country": "Brazil",
+    "region": "South America",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-11-28T15:38:51.153238"
+    },
+    "revenue_2014": 231981558610,
+    "revenue_2015": 230469723025,
+    "revenue_2016": 244198573158,
+    "revenue_2017": 234854792937,
+    "revenue_2018": 246711427158,
+    "revenue_2019": 208465514092,
+    "revenue_2020": 231108905202,
+    "revenue_2021": 250864228662,
+    "revenue_2022": 238137164071,
+    "revenue_2023": 231542344131
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6ed87"
+    },
+    "company": "Intel",
+    "base_country": "France",
+    "region": "Europe",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-09-23T15:38:51.153262"
+    },
+    "revenue_2014": 38883800624,
+    "revenue_2015": 42977243351,
+    "revenue_2016": 39795626565,
+    "revenue_2017": 38438313268,
+    "revenue_2018": 48694179480,
+    "revenue_2019": 45968832432,
+    "revenue_2020": 47768962119,
+    "revenue_2021": 45373598174,
+    "revenue_2022": 46054462479,
+    "revenue_2023": 41865546016
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6ed88"
+    },
+    "company": "Amazon",
+    "base_country": "United Kingdom",
+    "region": "Europe",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-11-03T15:38:51.153286"
+    },
+    "revenue_2014": 246979874515,
+    "revenue_2015": 302740297495,
+    "revenue_2016": 267809885439,
+    "revenue_2017": 306366165528,
+    "revenue_2018": 286765554956,
+    "revenue_2019": 269872775098,
+    "revenue_2020": 262708022899,
+    "revenue_2021": 248712624955,
+    "revenue_2022": 246345329811,
+    "revenue_2023": 236244810617
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6ed89"
+    },
+    "company": "Microsoft",
+    "base_country": "India",
+    "region": "Asia",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-05-19T15:38:51.153306"
+    },
+    "revenue_2014": 175269933026,
+    "revenue_2015": 185015691781,
+    "revenue_2016": 172527156629,
+    "revenue_2017": 186070428369,
+    "revenue_2018": 178139426389,
+    "revenue_2019": 194934722329,
+    "revenue_2020": 165986943280,
+    "revenue_2021": 160846415949,
+    "revenue_2022": 182205745849,
+    "revenue_2023": 187646159001
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6ed8a"
+    },
+    "company": "Amazon",
+    "base_country": "France",
+    "region": "Europe",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-06-14T15:38:51.153327"
+    },
+    "revenue_2014": 98996053409,
+    "revenue_2015": 84251124116,
+    "revenue_2016": 98747528284,
+    "revenue_2017": 88898545479,
+    "revenue_2018": 85226607885,
+    "revenue_2019": 89892316410,
+    "revenue_2020": 86234056859,
+    "revenue_2021": 97900164725,
+    "revenue_2022": 79999849426,
+    "revenue_2023": 104559744843
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6ed8b"
+    },
+    "company": "Cisco",
+    "base_country": "Germany",
+    "region": "Europe",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-10-11T15:38:51.153348"
+    },
+    "revenue_2014": 86072678888,
+    "revenue_2015": 84062000957,
+    "revenue_2016": 83059047092,
+    "revenue_2017": 79295345218,
+    "revenue_2018": 88795987663,
+    "revenue_2019": 97947786374,
+    "revenue_2020": 96705156085,
+    "revenue_2021": 83060879159,
+    "revenue_2022": 97356434211,
+    "revenue_2023": 84947066147
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6ed8c"
+    },
+    "company": "Netflix",
+    "base_country": "United Kingdom",
+    "region": "Europe",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-04-07T15:38:51.153384"
+    },
+    "revenue_2014": 292359860042,
+    "revenue_2015": 239797728931,
+    "revenue_2016": 290647775250,
+    "revenue_2017": 224436542870,
+    "revenue_2018": 263186390314,
+    "revenue_2019": 274471831963,
+    "revenue_2020": 250020007555,
+    "revenue_2021": 228393340832,
+    "revenue_2022": 233953853887,
+    "revenue_2023": 260179973924
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6ed8d"
+    },
+    "company": "Snap",
+    "base_country": "France",
+    "region": "Europe",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-10-02T15:38:51.153405"
+    },
+    "revenue_2014": 213461708554,
+    "revenue_2015": 256795933641,
+    "revenue_2016": 218251893223,
+    "revenue_2017": 230814740570,
+    "revenue_2018": 260311158681,
+    "revenue_2019": 243228293651,
+    "revenue_2020": 210227143618,
+    "revenue_2021": 239782995935,
+    "revenue_2022": 205757792929,
+    "revenue_2023": 211075444990
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6ed8e"
+    },
+    "company": "NVIDIA",
+    "base_country": "France",
+    "region": "Europe",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-12-27T15:38:51.153426"
+    },
+    "revenue_2014": 115011747283,
+    "revenue_2015": 91547103103,
+    "revenue_2016": 90203261271,
+    "revenue_2017": 99853102660,
+    "revenue_2018": 110382965023,
+    "revenue_2019": 111804044402,
+    "revenue_2020": 93917856431,
+    "revenue_2021": 95702670380,
+    "revenue_2022": 95134905033,
+    "revenue_2023": 100388764988
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6ed8f"
+    },
+    "company": "NVIDIA",
+    "base_country": "Japan",
+    "region": "Asia",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-03-28T15:38:51.153446"
+    },
+    "revenue_2014": 245484400323,
+    "revenue_2015": 231745411943,
+    "revenue_2016": 213866223508,
+    "revenue_2017": 240039408873,
+    "revenue_2018": 245367939766,
+    "revenue_2019": 218811155590,
+    "revenue_2020": 278424333955,
+    "revenue_2021": 243707531286,
+    "revenue_2022": 217118601110,
+    "revenue_2023": 228533598022
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6ed90"
+    },
+    "company": "Uber",
+    "base_country": "Australia",
+    "region": "Oceania",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-05-15T15:38:51.153466"
+    },
+    "revenue_2014": 110226507231,
+    "revenue_2015": 116325737780,
+    "revenue_2016": 101138804368,
+    "revenue_2017": 109395604168,
+    "revenue_2018": 122529127917,
+    "revenue_2019": 118023558127,
+    "revenue_2020": 103750092723,
+    "revenue_2021": 107695963446,
+    "revenue_2022": 95225842760,
+    "revenue_2023": 115972658537
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6ed91"
+    },
+    "company": "Airbnb",
+    "base_country": "Brazil",
+    "region": "South America",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-11-27T15:38:51.153490"
+    },
+    "revenue_2014": 199373217727,
+    "revenue_2015": 205750018238,
+    "revenue_2016": 260429414056,
+    "revenue_2017": 206247451491,
+    "revenue_2018": 252358093621,
+    "revenue_2019": 226420763256,
+    "revenue_2020": 254576587042,
+    "revenue_2021": 262683315429,
+    "revenue_2022": 240881048969,
+    "revenue_2023": 254061401603
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6ed92"
+    },
+    "company": "Uber",
+    "base_country": "United States",
+    "region": "North America",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-03-03T15:38:51.153510"
+    },
+    "revenue_2014": 295275614325,
+    "revenue_2015": 253581029408,
+    "revenue_2016": 287210407215,
+    "revenue_2017": 259736879606,
+    "revenue_2018": 273180223057,
+    "revenue_2019": 243896184058,
+    "revenue_2020": 287411746599,
+    "revenue_2021": 272724433037,
+    "revenue_2022": 303080707575,
+    "revenue_2023": 272734323843
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6ed93"
+    },
+    "company": "Oracle",
+    "base_country": "United Kingdom",
+    "region": "Europe",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-08-17T15:38:51.153533"
+    },
+    "revenue_2014": 179151933093,
+    "revenue_2015": 182734800318,
+    "revenue_2016": 173492915860,
+    "revenue_2017": 176230423284,
+    "revenue_2018": 177793300860,
+    "revenue_2019": 147726518280,
+    "revenue_2020": 187702861933,
+    "revenue_2021": 149397495949,
+    "revenue_2022": 172649954539,
+    "revenue_2023": 158247075196
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6ed94"
+    },
+    "company": "Uber",
+    "base_country": "Germany",
+    "region": "Europe",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-05-16T15:38:51.153556"
+    },
+    "revenue_2014": 236204598577,
+    "revenue_2015": 273561303820,
+    "revenue_2016": 283528319799,
+    "revenue_2017": 221257984075,
+    "revenue_2018": 265727917065,
+    "revenue_2019": 263900032941,
+    "revenue_2020": 217893273094,
+    "revenue_2021": 281820228564,
+    "revenue_2022": 225910780094,
+    "revenue_2023": 222781098152
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6ed95"
+    },
+    "company": "Google",
+    "base_country": "China",
+    "region": "Asia",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-12-26T15:38:51.153577"
+    },
+    "revenue_2014": 224776581917,
+    "revenue_2015": 262244056968,
+    "revenue_2016": 238226389397,
+    "revenue_2017": 267949215834,
+    "revenue_2018": 205128741153,
+    "revenue_2019": 263116474655,
+    "revenue_2020": 248231578438,
+    "revenue_2021": 205718575013,
+    "revenue_2022": 227806474717,
+    "revenue_2023": 212925300058
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6ed96"
+    },
+    "company": "IBM",
+    "base_country": "Canada",
+    "region": "North America",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-06-04T15:38:51.153600"
+    },
+    "revenue_2014": 69302239196,
+    "revenue_2015": 72355743615,
+    "revenue_2016": 62227952852,
+    "revenue_2017": 58065795617,
+    "revenue_2018": 63601627149,
+    "revenue_2019": 72204921059,
+    "revenue_2020": 64075512559,
+    "revenue_2021": 66465206927,
+    "revenue_2022": 66277078437,
+    "revenue_2023": 67106608445
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6ed97"
+    },
+    "company": "PayPal",
+    "base_country": "United Kingdom",
+    "region": "Europe",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-10-17T15:38:51.153621"
+    },
+    "revenue_2014": 29360702196,
+    "revenue_2015": 29167330348,
+    "revenue_2016": 33647518851,
+    "revenue_2017": 26720033885,
+    "revenue_2018": 27603159027,
+    "revenue_2019": 28696071778,
+    "revenue_2020": 27610511993,
+    "revenue_2021": 29694781431,
+    "revenue_2022": 33113926229,
+    "revenue_2023": 30808673144
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6ed98"
+    },
+    "company": "Snap",
+    "base_country": "Germany",
+    "region": "Europe",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-08-10T15:38:51.153644"
+    },
+    "revenue_2014": 266899111505,
+    "revenue_2015": 294583875036,
+    "revenue_2016": 255471011399,
+    "revenue_2017": 249942775737,
+    "revenue_2018": 297557717790,
+    "revenue_2019": 283849695023,
+    "revenue_2020": 231709268826,
+    "revenue_2021": 266407099612,
+    "revenue_2022": 256705783069,
+    "revenue_2023": 306453381799
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6ed99"
+    },
+    "company": "Netflix",
+    "base_country": "China",
+    "region": "Asia",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-02-20T15:38:51.153665"
+    },
+    "revenue_2014": 58558883428,
+    "revenue_2015": 60091634234,
+    "revenue_2016": 63167883359,
+    "revenue_2017": 54611039929,
+    "revenue_2018": 59074279048,
+    "revenue_2019": 68057558038,
+    "revenue_2020": 64179919622,
+    "revenue_2021": 65071482065,
+    "revenue_2022": 53719083830,
+    "revenue_2023": 54176755022
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6ed9a"
+    },
+    "company": "Uber",
+    "base_country": "Japan",
+    "region": "Asia",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-11-03T15:38:51.153688"
+    },
+    "revenue_2014": 276090195760,
+    "revenue_2015": 239937348245,
+    "revenue_2016": 250895241682,
+    "revenue_2017": 270960168202,
+    "revenue_2018": 237157735172,
+    "revenue_2019": 282238161511,
+    "revenue_2020": 255809611352,
+    "revenue_2021": 239568589064,
+    "revenue_2022": 238923903428,
+    "revenue_2023": 273988170805
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6ed9b"
+    },
+    "company": "Salesforce",
+    "base_country": "Germany",
+    "region": "Europe",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-07-25T15:38:51.153712"
+    },
+    "revenue_2014": 103243798347,
+    "revenue_2015": 128233464542,
+    "revenue_2016": 111795480484,
+    "revenue_2017": 123688796875,
+    "revenue_2018": 111346196463,
+    "revenue_2019": 132879802760,
+    "revenue_2020": 121765734117,
+    "revenue_2021": 110283711618,
+    "revenue_2022": 118514914422,
+    "revenue_2023": 106854220155
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6ed9c"
+    },
+    "company": "Airbnb",
+    "base_country": "Japan",
+    "region": "Asia",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-11-05T15:38:51.153732"
+    },
+    "revenue_2014": 45343086456,
+    "revenue_2015": 46993338128,
+    "revenue_2016": 47520070964,
+    "revenue_2017": 49065363643,
+    "revenue_2018": 56084061925,
+    "revenue_2019": 44713523193,
+    "revenue_2020": 48378405370,
+    "revenue_2021": 46440995043,
+    "revenue_2022": 55778563337,
+    "revenue_2023": 57458949529
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6ed9d"
+    },
+    "company": "Cisco",
+    "base_country": "Germany",
+    "region": "Europe",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-10-19T15:38:51.153752"
+    },
+    "revenue_2014": 82244132396,
+    "revenue_2015": 89644802323,
+    "revenue_2016": 92754002246,
+    "revenue_2017": 90907050776,
+    "revenue_2018": 81512418042,
+    "revenue_2019": 91214515608,
+    "revenue_2020": 96231971919,
+    "revenue_2021": 85658611125,
+    "revenue_2022": 94879092707,
+    "revenue_2023": 97617591167
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6ed9e"
+    },
+    "company": "Intel",
+    "base_country": "China",
+    "region": "Asia",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-02-05T15:38:51.153771"
+    },
+    "revenue_2014": 76909270161,
+    "revenue_2015": 78667819870,
+    "revenue_2016": 62272998848,
+    "revenue_2017": 70886508661,
+    "revenue_2018": 61814722087,
+    "revenue_2019": 61383877396,
+    "revenue_2020": 67952444145,
+    "revenue_2021": 78806520509,
+    "revenue_2022": 74330368576,
+    "revenue_2023": 64591610573
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6ed9f"
+    },
+    "company": "Intel",
+    "base_country": "Brazil",
+    "region": "South America",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-08-16T15:38:51.153795"
+    },
+    "revenue_2014": 61148755004,
+    "revenue_2015": 59509965051,
+    "revenue_2016": 57578672970,
+    "revenue_2017": 60045405160,
+    "revenue_2018": 65200767506,
+    "revenue_2019": 68381957065,
+    "revenue_2020": 64260217297,
+    "revenue_2021": 59662038456,
+    "revenue_2022": 56649270217,
+    "revenue_2023": 65721686598
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6eda0"
+    },
+    "company": "Microsoft",
+    "base_country": "Canada",
+    "region": "North America",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-03-14T15:38:51.153818"
+    },
+    "revenue_2014": 156609488126,
+    "revenue_2015": 147531721902,
+    "revenue_2016": 152261155781,
+    "revenue_2017": 159632573227,
+    "revenue_2018": 144371275981,
+    "revenue_2019": 151485235063,
+    "revenue_2020": 155148541055,
+    "revenue_2021": 142600185354,
+    "revenue_2022": 167350325044,
+    "revenue_2023": 180500849227
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6eda1"
+    },
+    "company": "Snap",
+    "base_country": "United States",
+    "region": "North America",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-03-29T15:38:51.153842"
+    },
+    "revenue_2014": 66613199178,
+    "revenue_2015": 74329519031,
+    "revenue_2016": 66750975744,
+    "revenue_2017": 70236194267,
+    "revenue_2018": 81022377646,
+    "revenue_2019": 84785017212,
+    "revenue_2020": 85314000939,
+    "revenue_2021": 68895790996,
+    "revenue_2022": 76743719011,
+    "revenue_2023": 71037085085
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6eda2"
+    },
+    "company": "PayPal",
+    "base_country": "Australia",
+    "region": "Oceania",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-05-19T15:38:51.153862"
+    },
+    "revenue_2014": 204458593967,
+    "revenue_2015": 180822323679,
+    "revenue_2016": 174928495489,
+    "revenue_2017": 208755574888,
+    "revenue_2018": 221833825442,
+    "revenue_2019": 174375599782,
+    "revenue_2020": 184900492909,
+    "revenue_2021": 190063928672,
+    "revenue_2022": 215173180382,
+    "revenue_2023": 209951665784
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6eda3"
+    },
+    "company": "Uber",
+    "base_country": "Japan",
+    "region": "Asia",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-07-14T15:38:51.153882"
+    },
+    "revenue_2014": 160070757786,
+    "revenue_2015": 164485701297,
+    "revenue_2016": 174413467119,
+    "revenue_2017": 166854448757,
+    "revenue_2018": 167866034577,
+    "revenue_2019": 182558449400,
+    "revenue_2020": 195767862391,
+    "revenue_2021": 184393655079,
+    "revenue_2022": 185686576302,
+    "revenue_2023": 191335634844
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6eda4"
+    },
+    "company": "Airbnb",
+    "base_country": "Australia",
+    "region": "Oceania",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-04-16T15:38:51.153902"
+    },
+    "revenue_2014": 203571139079,
+    "revenue_2015": 177217092723,
+    "revenue_2016": 166722553467,
+    "revenue_2017": 175373601505,
+    "revenue_2018": 180748829489,
+    "revenue_2019": 193661669370,
+    "revenue_2020": 204837007985,
+    "revenue_2021": 195275444108,
+    "revenue_2022": 172378173905,
+    "revenue_2023": 186946940487
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6eda5"
+    },
+    "company": "Cisco",
+    "base_country": "India",
+    "region": "Asia",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-07-28T15:38:51.153939"
+    },
+    "revenue_2014": 63189184781,
+    "revenue_2015": 77959817747,
+    "revenue_2016": 77970978301,
+    "revenue_2017": 73275698241,
+    "revenue_2018": 64437195178,
+    "revenue_2019": 65275000099,
+    "revenue_2020": 71539174196,
+    "revenue_2021": 64067288013,
+    "revenue_2022": 72367829153,
+    "revenue_2023": 60706854338
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6eda6"
+    },
+    "company": "PayPal",
+    "base_country": "France",
+    "region": "Europe",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-02-18T15:38:51.153961"
+    },
+    "revenue_2014": 141233172843,
+    "revenue_2015": 144054466452,
+    "revenue_2016": 123122803621,
+    "revenue_2017": 143943003838,
+    "revenue_2018": 148053887584,
+    "revenue_2019": 120464084063,
+    "revenue_2020": 141659843424,
+    "revenue_2021": 120894041481,
+    "revenue_2022": 130887548797,
+    "revenue_2023": 118509406622
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6eda7"
+    },
+    "company": "Oracle",
+    "base_country": "United States",
+    "region": "North America",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-06-15T15:38:51.153993"
+    },
+    "revenue_2014": 223231511190,
+    "revenue_2015": 193303674125,
+    "revenue_2016": 227984909939,
+    "revenue_2017": 205548837258,
+    "revenue_2018": 197447775374,
+    "revenue_2019": 184770074298,
+    "revenue_2020": 216207794141,
+    "revenue_2021": 209760830657,
+    "revenue_2022": 202664527567,
+    "revenue_2023": 202061882598
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6eda8"
+    },
+    "company": "PayPal",
+    "base_country": "Canada",
+    "region": "North America",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-02-17T15:38:51.154071"
+    },
+    "revenue_2014": 130262816160,
+    "revenue_2015": 110553317793,
+    "revenue_2016": 128271303157,
+    "revenue_2017": 112418965723,
+    "revenue_2018": 116742222831,
+    "revenue_2019": 108448298419,
+    "revenue_2020": 129661352540,
+    "revenue_2021": 103578935016,
+    "revenue_2022": 123689305343,
+    "revenue_2023": 135749637037
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6eda9"
+    },
+    "company": "Amazon",
+    "base_country": "Brazil",
+    "region": "South America",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2025-01-24T15:38:51.154114"
+    },
+    "revenue_2014": 213026507535,
+    "revenue_2015": 225678925594,
+    "revenue_2016": 253652068716,
+    "revenue_2017": 241315133441,
+    "revenue_2018": 241647509005,
+    "revenue_2019": 244492548863,
+    "revenue_2020": 232852162565,
+    "revenue_2021": 227476691418,
+    "revenue_2022": 236646082861,
+    "revenue_2023": 258764962995
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6edaa"
+    },
+    "company": "Salesforce",
+    "base_country": "Japan",
+    "region": "Asia",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-10-24T15:38:51.154140"
+    },
+    "revenue_2014": 15109489002,
+    "revenue_2015": 12184706257,
+    "revenue_2016": 13475901945,
+    "revenue_2017": 13768708656,
+    "revenue_2018": 15588613530,
+    "revenue_2019": 12786470305,
+    "revenue_2020": 14313090148,
+    "revenue_2021": 14888022023,
+    "revenue_2022": 11831429924,
+    "revenue_2023": 14533750046
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6edab"
+    },
+    "company": "Snap",
+    "base_country": "Brazil",
+    "region": "South America",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-08-12T15:38:51.154168"
+    },
+    "revenue_2014": 205274025985,
+    "revenue_2015": 204531590190,
+    "revenue_2016": 180855973674,
+    "revenue_2017": 205584361102,
+    "revenue_2018": 181457804027,
+    "revenue_2019": 211845315706,
+    "revenue_2020": 219998362672,
+    "revenue_2021": 205743252492,
+    "revenue_2022": 213213548559,
+    "revenue_2023": 192343488138
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6edac"
+    },
+    "company": "IBM",
+    "base_country": "Canada",
+    "region": "North America",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-03-13T15:38:51.154190"
+    },
+    "revenue_2014": 208447375585,
+    "revenue_2015": 238334776226,
+    "revenue_2016": 194573265097,
+    "revenue_2017": 199565661208,
+    "revenue_2018": 248402859452,
+    "revenue_2019": 242413736263,
+    "revenue_2020": 229249921820,
+    "revenue_2021": 241345522774,
+    "revenue_2022": 189871627644,
+    "revenue_2023": 207807149943
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6edad"
+    },
+    "company": "Apple",
+    "base_country": "India",
+    "region": "Asia",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-10-16T15:38:51.154213"
+    },
+    "revenue_2014": 116893924772,
+    "revenue_2015": 110685493593,
+    "revenue_2016": 99292006614,
+    "revenue_2017": 103270365237,
+    "revenue_2018": 117479804484,
+    "revenue_2019": 113315450532,
+    "revenue_2020": 117175905785,
+    "revenue_2021": 104486601943,
+    "revenue_2022": 114843226689,
+    "revenue_2023": 121472594074
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6edae"
+    },
+    "company": "Adobe",
+    "base_country": "Brazil",
+    "region": "South America",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2025-01-04T15:38:51.154237"
+    },
+    "revenue_2014": 25841597234,
+    "revenue_2015": 26331314772,
+    "revenue_2016": 29733384068,
+    "revenue_2017": 30214201322,
+    "revenue_2018": 26445641958,
+    "revenue_2019": 26055292195,
+    "revenue_2020": 27539833845,
+    "revenue_2021": 28687869825,
+    "revenue_2022": 29668726777,
+    "revenue_2023": 29786203201
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6edaf"
+    },
+    "company": "Tesla",
+    "base_country": "United States",
+    "region": "North America",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-06-05T15:38:51.154259"
+    },
+    "revenue_2014": 117914536577,
+    "revenue_2015": 136232631085,
+    "revenue_2016": 116387247538,
+    "revenue_2017": 132997457469,
+    "revenue_2018": 121911013199,
+    "revenue_2019": 115572656774,
+    "revenue_2020": 135487031699,
+    "revenue_2021": 148057020395,
+    "revenue_2022": 138499658067,
+    "revenue_2023": 148331297535
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6edb0"
+    },
+    "company": "Airbnb",
+    "base_country": "China",
+    "region": "Asia",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-07-04T15:38:51.154279"
+    },
+    "revenue_2014": 88789015998,
+    "revenue_2015": 96711315542,
+    "revenue_2016": 108358153995,
+    "revenue_2017": 109433101940,
+    "revenue_2018": 92059653564,
+    "revenue_2019": 88520697892,
+    "revenue_2020": 104845652472,
+    "revenue_2021": 106660359053,
+    "revenue_2022": 102032319395,
+    "revenue_2023": 93387279598
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6edb1"
+    },
+    "company": "Snap",
+    "base_country": "Canada",
+    "region": "North America",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-12-08T15:38:51.154304"
+    },
+    "revenue_2014": 91301863247,
+    "revenue_2015": 97991991697,
+    "revenue_2016": 92853318341,
+    "revenue_2017": 106665617639,
+    "revenue_2018": 95177493407,
+    "revenue_2019": 95858827438,
+    "revenue_2020": 112826916728,
+    "revenue_2021": 87585809699,
+    "revenue_2022": 94619589509,
+    "revenue_2023": 96304548771
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6edb2"
+    },
+    "company": "PayPal",
+    "base_country": "Japan",
+    "region": "Asia",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-02-04T15:38:51.154329"
+    },
+    "revenue_2014": 253795278233,
+    "revenue_2015": 236442241407,
+    "revenue_2016": 203696833657,
+    "revenue_2017": 254113468327,
+    "revenue_2018": 227260914739,
+    "revenue_2019": 206764442457,
+    "revenue_2020": 201587467910,
+    "revenue_2021": 243178594317,
+    "revenue_2022": 213636733491,
+    "revenue_2023": 245664789702
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6edb3"
+    },
+    "company": "PayPal",
+    "base_country": "India",
+    "region": "Asia",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-02-23T15:38:51.154353"
+    },
+    "revenue_2014": 194245998689,
+    "revenue_2015": 167619368703,
+    "revenue_2016": 194151083516,
+    "revenue_2017": 162839692294,
+    "revenue_2018": 174346561918,
+    "revenue_2019": 171205390180,
+    "revenue_2020": 154205147557,
+    "revenue_2021": 186309943745,
+    "revenue_2022": 189184228984,
+    "revenue_2023": 174041735115
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6edb4"
+    },
+    "company": "Facebook",
+    "base_country": "Japan",
+    "region": "Asia",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-11-07T15:38:51.154374"
+    },
+    "revenue_2014": 9054585722,
+    "revenue_2015": 9172012919,
+    "revenue_2016": 8934608540,
+    "revenue_2017": 11080365542,
+    "revenue_2018": 10508239220,
+    "revenue_2019": 10456863219,
+    "revenue_2020": 11424914033,
+    "revenue_2021": 9558034949,
+    "revenue_2022": 10206313473,
+    "revenue_2023": 10923591783
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6edb5"
+    },
+    "company": "Google",
+    "base_country": "United Kingdom",
+    "region": "Europe",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-12-28T15:38:51.154394"
+    },
+    "revenue_2014": 258382040473,
+    "revenue_2015": 272883547161,
+    "revenue_2016": 254556727631,
+    "revenue_2017": 297961890706,
+    "revenue_2018": 257956102650,
+    "revenue_2019": 250408518389,
+    "revenue_2020": 300039335587,
+    "revenue_2021": 262479808972,
+    "revenue_2022": 256609457462,
+    "revenue_2023": 263366073273
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6edb6"
+    },
+    "company": "Facebook",
+    "base_country": "India",
+    "region": "Asia",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-04-02T15:38:51.154418"
+    },
+    "revenue_2014": 222373694457,
+    "revenue_2015": 218151736507,
+    "revenue_2016": 232952991475,
+    "revenue_2017": 217436632240,
+    "revenue_2018": 232038225884,
+    "revenue_2019": 255237386948,
+    "revenue_2020": 270299584837,
+    "revenue_2021": 236243197403,
+    "revenue_2022": 216312047260,
+    "revenue_2023": 249036575892
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6edb7"
+    },
+    "company": "Uber",
+    "base_country": "France",
+    "region": "Europe",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-04-14T15:38:51.154438"
+    },
+    "revenue_2014": 218137127437,
+    "revenue_2015": 259886445178,
+    "revenue_2016": 226977972054,
+    "revenue_2017": 261686601346,
+    "revenue_2018": 273458965309,
+    "revenue_2019": 232998459801,
+    "revenue_2020": 250138744408,
+    "revenue_2021": 253606637547,
+    "revenue_2022": 237964762382,
+    "revenue_2023": 248827891816
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6edb8"
+    },
+    "company": "Google",
+    "base_country": "Japan",
+    "region": "Asia",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-06-29T15:38:51.154462"
+    },
+    "revenue_2014": 170488581609,
+    "revenue_2015": 170301498554,
+    "revenue_2016": 190800424159,
+    "revenue_2017": 169649838147,
+    "revenue_2018": 153916567967,
+    "revenue_2019": 191797336600,
+    "revenue_2020": 166490859316,
+    "revenue_2021": 153771919883,
+    "revenue_2022": 146544556611,
+    "revenue_2023": 146338303572
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6edb9"
+    },
+    "company": "Amazon",
+    "base_country": "United States",
+    "region": "North America",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-07-13T15:38:51.154485"
+    },
+    "revenue_2014": 289311369900,
+    "revenue_2015": 283481206399,
+    "revenue_2016": 256310378726,
+    "revenue_2017": 232638678784,
+    "revenue_2018": 265661372089,
+    "revenue_2019": 289120423552,
+    "revenue_2020": 247356336927,
+    "revenue_2021": 278964573611,
+    "revenue_2022": 271459956886,
+    "revenue_2023": 278019015699
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6edba"
+    },
+    "company": "Facebook",
+    "base_country": "United Kingdom",
+    "region": "Europe",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-04-08T15:38:51.154506"
+    },
+    "revenue_2014": 64744939067,
+    "revenue_2015": 53237998931,
+    "revenue_2016": 58737728888,
+    "revenue_2017": 64695544123,
+    "revenue_2018": 53346610079,
+    "revenue_2019": 51069717470,
+    "revenue_2020": 50158125203,
+    "revenue_2021": 63741485665,
+    "revenue_2022": 52564723410,
+    "revenue_2023": 51062866277
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6edbb"
+    },
+    "company": "NVIDIA",
+    "base_country": "Japan",
+    "region": "Asia",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-04-08T15:38:51.154527"
+    },
+    "revenue_2014": 215367676927,
+    "revenue_2015": 179367616268,
+    "revenue_2016": 190245817773,
+    "revenue_2017": 192831500874,
+    "revenue_2018": 215227101531,
+    "revenue_2019": 219626672477,
+    "revenue_2020": 208534594196,
+    "revenue_2021": 207337739084,
+    "revenue_2022": 166440844273,
+    "revenue_2023": 199228907169
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6edbc"
+    },
+    "company": "Amazon",
+    "base_country": "Canada",
+    "region": "North America",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-09-22T15:38:51.154547"
+    },
+    "revenue_2014": 304191047271,
+    "revenue_2015": 308175253076,
+    "revenue_2016": 270034168698,
+    "revenue_2017": 283559256767,
+    "revenue_2018": 317291191313,
+    "revenue_2019": 292845435143,
+    "revenue_2020": 297695593472,
+    "revenue_2021": 341190393962,
+    "revenue_2022": 327323866795,
+    "revenue_2023": 282105125474
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6edbd"
+    },
+    "company": "Facebook",
+    "base_country": "United States",
+    "region": "North America",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-02-07T15:38:51.154570"
+    },
+    "revenue_2014": 144150611000,
+    "revenue_2015": 135807414231,
+    "revenue_2016": 157676617880,
+    "revenue_2017": 135109673632,
+    "revenue_2018": 120252332850,
+    "revenue_2019": 129081419383,
+    "revenue_2020": 133641431246,
+    "revenue_2021": 156876894371,
+    "revenue_2022": 131545760078,
+    "revenue_2023": 134583500772
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6edbe"
+    },
+    "company": "Netflix",
+    "base_country": "Australia",
+    "region": "Oceania",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-06-14T15:38:51.154596"
+    },
+    "revenue_2014": 162352818112,
+    "revenue_2015": 145188442000,
+    "revenue_2016": 174362658503,
+    "revenue_2017": 165427017904,
+    "revenue_2018": 164919107642,
+    "revenue_2019": 167339804731,
+    "revenue_2020": 159275080042,
+    "revenue_2021": 167121964425,
+    "revenue_2022": 166320528563,
+    "revenue_2023": 173426919520
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6edbf"
+    },
+    "company": "Uber",
+    "base_country": "China",
+    "region": "Asia",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2025-01-19T15:38:51.154623"
+    },
+    "revenue_2014": 325136161565,
+    "revenue_2015": 314275833464,
+    "revenue_2016": 280707356624,
+    "revenue_2017": 258641223997,
+    "revenue_2018": 253413198308,
+    "revenue_2019": 326211290477,
+    "revenue_2020": 271257325996,
+    "revenue_2021": 282763499429,
+    "revenue_2022": 296756045008,
+    "revenue_2023": 288003755213
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6edc0"
+    },
+    "company": "Airbnb",
+    "base_country": "Canada",
+    "region": "North America",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-12-31T15:38:51.154646"
+    },
+    "revenue_2014": 47156229461,
+    "revenue_2015": 49261131746,
+    "revenue_2016": 50391278811,
+    "revenue_2017": 41243839033,
+    "revenue_2018": 48293575420,
+    "revenue_2019": 42812875502,
+    "revenue_2020": 44078631769,
+    "revenue_2021": 51915930141,
+    "revenue_2022": 47031185790,
+    "revenue_2023": 51494799696
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6edc1"
+    },
+    "company": "Intel",
+    "base_country": "United Kingdom",
+    "region": "Europe",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-04-12T15:38:51.154666"
+    },
+    "revenue_2014": 108734862824,
+    "revenue_2015": 130970916693,
+    "revenue_2016": 142948932536,
+    "revenue_2017": 111715731833,
+    "revenue_2018": 121738339257,
+    "revenue_2019": 118554263663,
+    "revenue_2020": 112540368580,
+    "revenue_2021": 125307480791,
+    "revenue_2022": 126001950712,
+    "revenue_2023": 126672810012
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6edc2"
+    },
+    "company": "Amazon",
+    "base_country": "United Kingdom",
+    "region": "Europe",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-04-03T15:38:51.154693"
+    },
+    "revenue_2014": 149421642758,
+    "revenue_2015": 164301466411,
+    "revenue_2016": 145825493780,
+    "revenue_2017": 159176135972,
+    "revenue_2018": 173625269714,
+    "revenue_2019": 156035780093,
+    "revenue_2020": 143341137808,
+    "revenue_2021": 152503453167,
+    "revenue_2022": 171695749099,
+    "revenue_2023": 160932925229
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6edc3"
+    },
+    "company": "Oracle",
+    "base_country": "Canada",
+    "region": "North America",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-10-01T15:38:51.154715"
+    },
+    "revenue_2014": 150060110439,
+    "revenue_2015": 180791422020,
+    "revenue_2016": 155465893982,
+    "revenue_2017": 144034182874,
+    "revenue_2018": 180626990112,
+    "revenue_2019": 146643393688,
+    "revenue_2020": 145067428546,
+    "revenue_2021": 171667756670,
+    "revenue_2022": 158923915872,
+    "revenue_2023": 173975213261
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6edc4"
+    },
+    "company": "Adobe",
+    "base_country": "Brazil",
+    "region": "South America",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2025-01-07T15:38:51.154735"
+    },
+    "revenue_2014": 49793770717,
+    "revenue_2015": 48807155542,
+    "revenue_2016": 49557242764,
+    "revenue_2017": 38188959549,
+    "revenue_2018": 43546508122,
+    "revenue_2019": 39991397344,
+    "revenue_2020": 40432830792,
+    "revenue_2021": 44356317548,
+    "revenue_2022": 44727553393,
+    "revenue_2023": 43240159598
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6edc5"
+    },
+    "company": "IBM",
+    "base_country": "Germany",
+    "region": "Europe",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-11-11T15:38:51.154754"
+    },
+    "revenue_2014": 224054858861,
+    "revenue_2015": 259469347453,
+    "revenue_2016": 240054896962,
+    "revenue_2017": 216632019916,
+    "revenue_2018": 215179833646,
+    "revenue_2019": 236799187609,
+    "revenue_2020": 225119868888,
+    "revenue_2021": 201557685363,
+    "revenue_2022": 206298078669,
+    "revenue_2023": 219519601101
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6edc6"
+    },
+    "company": "Microsoft",
+    "base_country": "Brazil",
+    "region": "South America",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-12-18T15:38:51.154777"
+    },
+    "revenue_2014": 110414256622,
+    "revenue_2015": 100635639551,
+    "revenue_2016": 104479291083,
+    "revenue_2017": 97328970158,
+    "revenue_2018": 106035367705,
+    "revenue_2019": 93375348794,
+    "revenue_2020": 103192588750,
+    "revenue_2021": 86989423274,
+    "revenue_2022": 88027350727,
+    "revenue_2023": 99352830728
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6edc7"
+    },
+    "company": "Apple",
+    "base_country": "Germany",
+    "region": "Europe",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-04-15T15:38:51.154800"
+    },
+    "revenue_2014": 244010725569,
+    "revenue_2015": 305819112176,
+    "revenue_2016": 265736775349,
+    "revenue_2017": 294195728732,
+    "revenue_2018": 239732542852,
+    "revenue_2019": 261141432151,
+    "revenue_2020": 260914112148,
+    "revenue_2021": 304950632156,
+    "revenue_2022": 239144931580,
+    "revenue_2023": 268676524468
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6edc8"
+    },
+    "company": "Netflix",
+    "base_country": "China",
+    "region": "Asia",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-07-25T15:38:51.154821"
+    },
+    "revenue_2014": 33204999008,
+    "revenue_2015": 33051246819,
+    "revenue_2016": 36113351814,
+    "revenue_2017": 31617233956,
+    "revenue_2018": 34042100415,
+    "revenue_2019": 31581675234,
+    "revenue_2020": 29790646570,
+    "revenue_2021": 31844860216,
+    "revenue_2022": 29184929913,
+    "revenue_2023": 31103290595
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6edc9"
+    },
+    "company": "Uber",
+    "base_country": "Japan",
+    "region": "Asia",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-04-29T15:38:51.154843"
+    },
+    "revenue_2014": 115695940204,
+    "revenue_2015": 111616308288,
+    "revenue_2016": 89881199498,
+    "revenue_2017": 92210592449,
+    "revenue_2018": 113843025819,
+    "revenue_2019": 105597633388,
+    "revenue_2020": 112636859017,
+    "revenue_2021": 109060589585,
+    "revenue_2022": 112318721810,
+    "revenue_2023": 90425081690
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6edca"
+    },
+    "company": "Microsoft",
+    "base_country": "Germany",
+    "region": "Europe",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-08-26T15:38:51.154864"
+    },
+    "revenue_2014": 189823787366,
+    "revenue_2015": 244453163846,
+    "revenue_2016": 229258767174,
+    "revenue_2017": 185674802913,
+    "revenue_2018": 243229303556,
+    "revenue_2019": 191064693332,
+    "revenue_2020": 210959692453,
+    "revenue_2021": 206170777367,
+    "revenue_2022": 194516103114,
+    "revenue_2023": 213361266002
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6edcb"
+    },
+    "company": "Microsoft",
+    "base_country": "Canada",
+    "region": "North America",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-02-08T15:38:51.154888"
+    },
+    "revenue_2014": 99262528300,
+    "revenue_2015": 92390981903,
+    "revenue_2016": 97158883241,
+    "revenue_2017": 115045501357,
+    "revenue_2018": 112441255076,
+    "revenue_2019": 96863734010,
+    "revenue_2020": 118174382707,
+    "revenue_2021": 101398087123,
+    "revenue_2022": 119061433492,
+    "revenue_2023": 101580793545
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6edcc"
+    },
+    "company": "Twitter",
+    "base_country": "Canada",
+    "region": "North America",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-08-01T15:38:51.154911"
+    },
+    "revenue_2014": 19776204239,
+    "revenue_2015": 21023335207,
+    "revenue_2016": 24545319068,
+    "revenue_2017": 20461695809,
+    "revenue_2018": 23749334358,
+    "revenue_2019": 19983284411,
+    "revenue_2020": 24436924077,
+    "revenue_2021": 23089648920,
+    "revenue_2022": 23998292933,
+    "revenue_2023": 22009642757
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6edcd"
+    },
+    "company": "Adobe",
+    "base_country": "United Kingdom",
+    "region": "Europe",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-05-04T15:38:51.155795"
+    },
+    "revenue_2014": 89116639618,
+    "revenue_2015": 82126315710,
+    "revenue_2016": 71273161540,
+    "revenue_2017": 85281506285,
+    "revenue_2018": 91506147999,
+    "revenue_2019": 79806198998,
+    "revenue_2020": 73404715235,
+    "revenue_2021": 86649627132,
+    "revenue_2022": 75593080011,
+    "revenue_2023": 73636672372
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6edce"
+    },
+    "company": "Adobe",
+    "base_country": "Australia",
+    "region": "Oceania",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-03-16T15:38:51.155825"
+    },
+    "revenue_2014": 130949038751,
+    "revenue_2015": 151524752037,
+    "revenue_2016": 117074291970,
+    "revenue_2017": 130445389670,
+    "revenue_2018": 123381615663,
+    "revenue_2019": 117188042751,
+    "revenue_2020": 146731523554,
+    "revenue_2021": 132203027656,
+    "revenue_2022": 133972065852,
+    "revenue_2023": 136284155282
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6edcf"
+    },
+    "company": "Amazon",
+    "base_country": "United Kingdom",
+    "region": "Europe",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-11-08T15:38:51.155848"
+    },
+    "revenue_2014": 84512729615,
+    "revenue_2015": 73313762193,
+    "revenue_2016": 71468341907,
+    "revenue_2017": 85658447025,
+    "revenue_2018": 89529943704,
+    "revenue_2019": 93574157791,
+    "revenue_2020": 86016408446,
+    "revenue_2021": 87161112049,
+    "revenue_2022": 78643783125,
+    "revenue_2023": 86922147937
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6edd0"
+    },
+    "company": "Google",
+    "base_country": "Canada",
+    "region": "North America",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-11-27T15:38:51.155870"
+    },
+    "revenue_2014": 224505608369,
+    "revenue_2015": 213674309427,
+    "revenue_2016": 208691321589,
+    "revenue_2017": 226159915200,
+    "revenue_2018": 211088213118,
+    "revenue_2019": 240308301767,
+    "revenue_2020": 196696050272,
+    "revenue_2021": 211063759097,
+    "revenue_2022": 203032332827,
+    "revenue_2023": 220341630619
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6edd1"
+    },
+    "company": "Zoom",
+    "base_country": "Japan",
+    "region": "Asia",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-02-17T15:38:51.155912"
+    },
+    "revenue_2014": 132922104408,
+    "revenue_2015": 159009007979,
+    "revenue_2016": 123513281008,
+    "revenue_2017": 152045070728,
+    "revenue_2018": 143968515315,
+    "revenue_2019": 143531184881,
+    "revenue_2020": 142377607794,
+    "revenue_2021": 127975228354,
+    "revenue_2022": 143701548922,
+    "revenue_2023": 136795060253
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6edd2"
+    },
+    "company": "Amazon",
+    "base_country": "Australia",
+    "region": "Oceania",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-03-18T15:38:51.155961"
+    },
+    "revenue_2014": 64697961761,
+    "revenue_2015": 85655055679,
+    "revenue_2016": 65109080255,
+    "revenue_2017": 80674011615,
+    "revenue_2018": 81578546627,
+    "revenue_2019": 82421730203,
+    "revenue_2020": 67457690056,
+    "revenue_2021": 67583985136,
+    "revenue_2022": 69252417653,
+    "revenue_2023": 74952213617
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6edd3"
+    },
+    "company": "Uber",
+    "base_country": "Canada",
+    "region": "North America",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-04-04T15:38:51.155987"
+    },
+    "revenue_2014": 164854536899,
+    "revenue_2015": 158322070721,
+    "revenue_2016": 150897081517,
+    "revenue_2017": 184819662042,
+    "revenue_2018": 156384808118,
+    "revenue_2019": 174310493386,
+    "revenue_2020": 183333798932,
+    "revenue_2021": 161193444641,
+    "revenue_2022": 146386232523,
+    "revenue_2023": 162010099564
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6edd4"
+    },
+    "company": "PayPal",
+    "base_country": "France",
+    "region": "Europe",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-12-02T15:38:51.156010"
+    },
+    "revenue_2014": 199090877688,
+    "revenue_2015": 237458457140,
+    "revenue_2016": 225996980488,
+    "revenue_2017": 218036439853,
+    "revenue_2018": 248771358533,
+    "revenue_2019": 229269172738,
+    "revenue_2020": 231038595677,
+    "revenue_2021": 194625924821,
+    "revenue_2022": 223541908083,
+    "revenue_2023": 218621944290
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6edd5"
+    },
+    "company": "Salesforce",
+    "base_country": "United States",
+    "region": "North America",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-09-24T15:38:51.156031"
+    },
+    "revenue_2014": 176426724571,
+    "revenue_2015": 221985716511,
+    "revenue_2016": 234244987529,
+    "revenue_2017": 188363012097,
+    "revenue_2018": 207430058825,
+    "revenue_2019": 228038848829,
+    "revenue_2020": 177798167908,
+    "revenue_2021": 178225501495,
+    "revenue_2022": 182070103433,
+    "revenue_2023": 192655979380
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6edd6"
+    },
+    "company": "Snap",
+    "base_country": "China",
+    "region": "Asia",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-07-04T15:38:51.156059"
+    },
+    "revenue_2014": 231586428271,
+    "revenue_2015": 222467418135,
+    "revenue_2016": 217193359930,
+    "revenue_2017": 190472554186,
+    "revenue_2018": 210820911064,
+    "revenue_2019": 237760017081,
+    "revenue_2020": 223942053179,
+    "revenue_2021": 213137045129,
+    "revenue_2022": 209304216948,
+    "revenue_2023": 236359833109
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6edd7"
+    },
+    "company": "Amazon",
+    "base_country": "Germany",
+    "region": "Europe",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-11-20T15:38:51.156085"
+    },
+    "revenue_2014": 119994794258,
+    "revenue_2015": 135011218611,
+    "revenue_2016": 109321310803,
+    "revenue_2017": 122226906547,
+    "revenue_2018": 126102716878,
+    "revenue_2019": 140136377359,
+    "revenue_2020": 107139347026,
+    "revenue_2021": 133589616215,
+    "revenue_2022": 118639154482,
+    "revenue_2023": 130343752591
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6edd8"
+    },
+    "company": "Twitter",
+    "base_country": "China",
+    "region": "Asia",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2025-01-09T15:38:51.156106"
+    },
+    "revenue_2014": 170583081186,
+    "revenue_2015": 141847719248,
+    "revenue_2016": 145771263279,
+    "revenue_2017": 146568348413,
+    "revenue_2018": 132274837839,
+    "revenue_2019": 145885034058,
+    "revenue_2020": 174010141236,
+    "revenue_2021": 150922420355,
+    "revenue_2022": 144287118012,
+    "revenue_2023": 167596388517
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6edd9"
+    },
+    "company": "Facebook",
+    "base_country": "Japan",
+    "region": "Asia",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-04-18T15:38:51.156134"
+    },
+    "revenue_2014": 80527860262,
+    "revenue_2015": 72928611961,
+    "revenue_2016": 72467624741,
+    "revenue_2017": 82828424781,
+    "revenue_2018": 80559345429,
+    "revenue_2019": 77560077408,
+    "revenue_2020": 81203343058,
+    "revenue_2021": 73787773232,
+    "revenue_2022": 81933238416,
+    "revenue_2023": 81295047052
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6edda"
+    },
+    "company": "Airbnb",
+    "base_country": "Brazil",
+    "region": "South America",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-09-18T15:38:51.156156"
+    },
+    "revenue_2014": 136602987088,
+    "revenue_2015": 151421866003,
+    "revenue_2016": 145734150394,
+    "revenue_2017": 154540987778,
+    "revenue_2018": 137590096913,
+    "revenue_2019": 166875196022,
+    "revenue_2020": 145405503694,
+    "revenue_2021": 161881435460,
+    "revenue_2022": 147416513326,
+    "revenue_2023": 174012468473
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6eddb"
+    },
+    "company": "PayPal",
+    "base_country": "Australia",
+    "region": "Oceania",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-11-28T15:38:51.156183"
+    },
+    "revenue_2014": 118704788922,
+    "revenue_2015": 128540126774,
+    "revenue_2016": 106561375712,
+    "revenue_2017": 99089032093,
+    "revenue_2018": 124868889199,
+    "revenue_2019": 104732523435,
+    "revenue_2020": 98323293387,
+    "revenue_2021": 103189132985,
+    "revenue_2022": 109245924799,
+    "revenue_2023": 103566787340
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6eddc"
+    },
+    "company": "Cisco",
+    "base_country": "United Kingdom",
+    "region": "Europe",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-05-13T15:38:51.156203"
+    },
+    "revenue_2014": 260989623534,
+    "revenue_2015": 250722674517,
+    "revenue_2016": 327319110173,
+    "revenue_2017": 279532781033,
+    "revenue_2018": 324038792884,
+    "revenue_2019": 289138032968,
+    "revenue_2020": 295159739976,
+    "revenue_2021": 291582753821,
+    "revenue_2022": 288211439206,
+    "revenue_2023": 264375801904
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6eddd"
+    },
+    "company": "Snap",
+    "base_country": "Canada",
+    "region": "North America",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-06-25T15:38:51.156224"
+    },
+    "revenue_2014": 159611688720,
+    "revenue_2015": 142719266816,
+    "revenue_2016": 175180712997,
+    "revenue_2017": 155764643745,
+    "revenue_2018": 181230856116,
+    "revenue_2019": 178578018404,
+    "revenue_2020": 145045621167,
+    "revenue_2021": 143693570391,
+    "revenue_2022": 139602295651,
+    "revenue_2023": 161208217747
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6edde"
+    },
+    "company": "Cisco",
+    "base_country": "Canada",
+    "region": "North America",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-09-25T15:38:51.156244"
+    },
+    "revenue_2014": 119258565994,
+    "revenue_2015": 142060067304,
+    "revenue_2016": 112440947141,
+    "revenue_2017": 141318111184,
+    "revenue_2018": 113689241454,
+    "revenue_2019": 127676622510,
+    "revenue_2020": 114005803114,
+    "revenue_2021": 127053654585,
+    "revenue_2022": 118465601544,
+    "revenue_2023": 122369231105
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6eddf"
+    },
+    "company": "Airbnb",
+    "base_country": "Japan",
+    "region": "Asia",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-08-17T15:38:51.156264"
+    },
+    "revenue_2014": 176037938826,
+    "revenue_2015": 172739455975,
+    "revenue_2016": 164846265901,
+    "revenue_2017": 161194936762,
+    "revenue_2018": 139294756612,
+    "revenue_2019": 143760545056,
+    "revenue_2020": 135436140177,
+    "revenue_2021": 159772966087,
+    "revenue_2022": 152225698578,
+    "revenue_2023": 147714917273
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6ede0"
+    },
+    "company": "PayPal",
+    "base_country": "France",
+    "region": "Europe",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-10-31T15:38:51.156287"
+    },
+    "revenue_2014": 219676836690,
+    "revenue_2015": 199022931793,
+    "revenue_2016": 167308154957,
+    "revenue_2017": 177570262889,
+    "revenue_2018": 205479657911,
+    "revenue_2019": 174309362393,
+    "revenue_2020": 200226180064,
+    "revenue_2021": 197554578386,
+    "revenue_2022": 200939732302,
+    "revenue_2023": 220484618235
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6ede1"
+    },
+    "company": "Uber",
+    "base_country": "India",
+    "region": "Asia",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-07-21T15:38:51.156307"
+    },
+    "revenue_2014": 321791317114,
+    "revenue_2015": 319998902776,
+    "revenue_2016": 298552665916,
+    "revenue_2017": 263421119727,
+    "revenue_2018": 266429462859,
+    "revenue_2019": 266140247289,
+    "revenue_2020": 282575498966,
+    "revenue_2021": 340984015943,
+    "revenue_2022": 337214939889,
+    "revenue_2023": 294455853141
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6ede2"
+    },
+    "company": "Microsoft",
+    "base_country": "France",
+    "region": "Europe",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-12-15T15:38:51.156329"
+    },
+    "revenue_2014": 184683650895,
+    "revenue_2015": 183468160816,
+    "revenue_2016": 161724224132,
+    "revenue_2017": 174104104449,
+    "revenue_2018": 153030822939,
+    "revenue_2019": 157154059744,
+    "revenue_2020": 175410752131,
+    "revenue_2021": 141205876100,
+    "revenue_2022": 152882542786,
+    "revenue_2023": 161565386926
+  },
+  {
+    "_id": {
+      "$oid": "6797a88baf157db9c9a6ede3"
+    },
+    "company": "Netflix",
+    "base_country": "United States",
+    "region": "North America",
+    "currency": "USD",
+    "last_updated": {
+      "$date": "2024-02-15T15:38:51.156349"
+    },
+    "revenue_2014": 49496714162,
+    "revenue_2015": 46164708180,
+    "revenue_2016": 46874429304,
+    "revenue_2017": 52206849363,
+    "revenue_2018": 56185323926,
+    "revenue_2019": 47050233812,
+    "revenue_2020": 53243919479,
+    "revenue_2021": 55198239702,
+    "revenue_2022": 56791279768,
+    "revenue_2023": 58350674027
+  }
+]
