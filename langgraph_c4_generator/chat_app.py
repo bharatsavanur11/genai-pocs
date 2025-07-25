@@ -8,7 +8,7 @@ import json
 import re
 
 # Set your OpenAI API key
-api_key = "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"
+api_key = "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"
 model = "gpt-4o-mini"
 
 # Set up session state
