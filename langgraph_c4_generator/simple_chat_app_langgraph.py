@@ -4,7 +4,7 @@ from typing import Dict, Any
 import openai
 
 
-api_key="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"
+##api_key="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"
 # Define the state as a typed dictionary
 class QAState(Dict[str, Any]):
     question: str
