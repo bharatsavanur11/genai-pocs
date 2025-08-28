@@ -1,20 +1,28 @@
 from langgraph.graph import StateGraph, END, START
 from langchain_openai import ChatOpenAI
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
 import re
 import uuid
+import os
+from dotenv import load_dotenv
 
+# Load environment variables
+load_dotenv()
 
-api_key = "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"
+# Get API key from environment variable
+api_key = os.getenv("OPENAI_API_KEY")
+if not api_key:
+    print("Warning: OPENAI_API_KEY environment variable not set. Please set it to use OpenAI services.")
+    api_key = "dummy-key"  # This will cause an error but allows the script to run for testing
 
 # Define the state
 class C4State(Dict[str, Any]):
     raw_spec: str
-    components: List[Dict[str, str]] | None
-    relationships: List[Dict[str, str]] | None
-    missing_info: List[str] | None
-    summary: str | None
-    dsl: str | None
+    components: Optional[List[Dict[str, str]]]
+    relationships: Optional[List[Dict[str, str]]]
+    missing_info: Optional[List[str]]
+    summary: Optional[str]
+    dsl: Optional[str]
 
 # Agent 1: Parse components and relationships
 def parse_spec_node(state: C4State) -> C4State:
@@ -64,22 +72,19 @@ def request_info_node(state: C4State) -> C4State:
     
     Please provide a prompt to ask the user for clarification in a clear and concise manner.
     """
-    llm = ChatOpenAI(model="gpt-3.5-turbo", api_key="YOUR_API_KEY")
+    llm = ChatOpenAI(model="gpt-3.5-turbo", api_key=api_key)
     response = llm.invoke(prompt).content
     return {"missing_info": response}
 
 # Agent 3: Summarize requirements
 def summarize_node(state: C4State) -> C4State:
     print("Summarize Node:", state)
-    llm = ChatOpenAI(model="gpt-3.5-turbo", api_key="YOUR_API_KEY")
+    llm = ChatOpenAI(model="gpt-3.5-turbo", api_key=api_key)
     prompt = f"""
     Summarize the following C4 components and relationships into a concise description of the system's requirements.
 
     Components:
     {state.get('components', [])}
-
-    Relationships:
-    {state.get('relationships', [])}
 
     Example output:
     The system consists of a User Interface that sends requests to a Backend Service, which processes data and stores it in a Database. The Backend Service retrieves data from an External API.
