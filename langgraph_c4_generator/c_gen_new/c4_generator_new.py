@@ -31,6 +31,55 @@ from langgraph.graph import END, START, StateGraph
 
 # Load environment variables
 load_dotenv()
+example_dsl = """
+workspace "My Web Application" "A sample web application." {
+
+    model {
+        // Actors
+        user = person "Customer" "A customer of the web application."
+
+        // External Systems
+        emailSystem = softwareSystem "E-mail System" "The internal e-mail system."
+        paymentGateway = softwareSystem "Payment Gateway" "External system for processing payments."
+
+        // Internal System
+        webapp = softwareSystem "My Web Application" "Allows customers to browse products and make purchases." {
+            webApplication = container "Web Application" "Provides the user interface and handles business logic." "Java Spring Boot"
+            database = container "Database" "Stores product information, customer data, and orders." "PostgreSQL Database"
+            apiGateway = container "API Gateway" "Manages API requests and routes them to the appropriate services." "Nginx"
+            orderService = container "Order Service" "Handles order creation and management." "Java Spring Boot Microservice"
+            productService = container "Product Service" "Manages product catalog and inventory." "Java Spring Boot Microservice"
+
+            // Relationships within the system
+            user -> webApplication "Uses"
+            webApplication -> apiGateway "Makes API calls to"
+            apiGateway -> orderService "Routes order requests to"
+            apiGateway -> productService "Routes product requests to"
+            orderService -> database "Reads from and writes to"
+            productService -> database "Reads from"
+            orderService -> emailSystem "Sends order confirmation emails via"
+            orderService -> paymentGateway "Initiates payments via"
+        }
+    }
+
+    views {
+        // System Context Diagram
+        systemContext webapp "SystemContext" {
+            include *
+            autoLayout
+        }
+
+        // Container Diagram
+        container webapp "Containers" {
+            include *
+            autoLayout
+        }
+    }
+}
+"""
+
+
+
 
 # Get API key from environment variable
 api_key = os.getenv("OPENAI_API_KEY")
@@ -50,6 +99,7 @@ class C4State(TypedDict):
     dsl_context: Optional[str]
     dsl_container: Optional[str]
     dsl_component: Optional[str]
+    dsl_context_container: Optional[str]
     architecture_analysis: Optional[Dict[str, Any]]
 
 # Pydantic models for structured output
@@ -247,7 +297,7 @@ def generate_context_dsl_node(state: C4State) -> C4State:
     """Generate Structurizr DSL for System Context Diagram (Level 1)"""
     print("🌐 Generating System Context Diagram DSL...")
     
-    llm = ChatOpenAI(model="gpt-4", api_key=api_key, temperature=0.1)
+    llm = ChatOpenAI(model="gpt-4.1", api_key=api_key, temperature=0.1)
     
     systems = state.get("systems", [])
     external_systems = state.get("external_systems", [])
@@ -269,14 +319,31 @@ def generate_context_dsl_node(state: C4State) -> C4State:
     2. Model with all systems and external systems
     3. Views showing the system context
     4. Proper styling and layout
+    5. Container views for each system
+    6. Proper relationships between containers
+    7. Technology information for containers
 
     Focus on showing:
     - Main systems and their boundaries
     - External systems and APIs
     - High-level relationships between systems
     - Clear system boundaries
+    - Containers within each system
+    - Container-to-container relationships
+    - Technology choices for each container
+    - Data flow between containers
 
-    Return ONLY the Structurizr DSL code, no explanations.
+    Some Do's and Dont's:
+    - Do not use any markup or comments in the DSL code.
+    - Do not apply any custom styles 
+    - Do not use spaces inside view names
+
+   
+    Return ONLY the Structurizr DSL code, no explanations without markup. Also make sure it follows the Structurizr DSL syntax while generating the
+    DSL code.
+
+    Below is the example of the Structurizr DSL code:
+    {example_dsl}
     """
     
     try:
@@ -299,7 +366,7 @@ def generate_container_dsl_node(state: C4State) -> C4State:
     """Generate Structurizr DSL for Container Diagram (Level 2)"""
     print("📦 Generating Container Diagram DSL...")
     
-    llm = ChatOpenAI(model="gpt-4", api_key=api_key, temperature=0.1)
+    llm = ChatOpenAI(model="gpt-4.1", api_key=api_key, temperature=0.1)
     
     systems = state.get("systems", [])
     containers = state.get("containers", [])
@@ -313,11 +380,12 @@ def generate_container_dsl_node(state: C4State) -> C4State:
     Relationships: {json.dumps(relationships, indent=2)}
 
     Create Structurizr DSL that includes:
-    1. Workspace definition
+    1. Workspace definition     
     2. Model with systems and their containers
-    3. Container views for each system
-    4. Proper relationships between containers
-    5. Technology information for containers
+    3. Views showing the system context
+    4. Container views for each system
+    5. Proper relationships between containers
+    6. Technology information for containers
 
     Focus on showing:
     - Containers within each system
@@ -325,7 +393,7 @@ def generate_container_dsl_node(state: C4State) -> C4State:
     - Technology choices for each container
     - Data flow between containers
 
-    Return ONLY the Structurizr DSL code, no explanations.
+    Return ONLY the Structurizr DSL code, no explanations. 
     """
     
     try:
@@ -342,6 +410,194 @@ def generate_container_dsl_node(state: C4State) -> C4State:
             **state,
             "dsl_container": f"// Error generating container DSL: {str(e)}"
         }
+
+# Agent 4.5: Merge Context and Container DSLs
+def merge_context_and_container_node(state: C4State) -> C4State:
+    """Generate a single valid Structurizr DSL where containers are nested inside their systems."""
+    print("🧩 Building unified Structurizr DSL (systems + containers)...")
+
+    systems = state.get("systems", []) or []
+    containers = state.get("containers", []) or []
+    external_systems = state.get("external_systems", []) or []
+    relationships = state.get("relationships", []) or []
+
+    if not systems and not containers and not external_systems:
+        return {**state, "dsl_context_container": "// No architecture elements available to build DSL"}
+
+    def make_alias(name: str) -> str:
+        base = re.sub(r"[^A-Za-z0-9_]", "_", name.strip())
+        base = re.sub(r"_+", "_", base)
+        return base[:60] if base else "Element"
+
+    # Build alias maps
+    system_alias: Dict[str, str] = {}
+    container_alias: Dict[str, str] = {}
+    external_alias: Dict[str, str] = {}
+
+    # Assign aliases for systems
+    for sys_obj in systems:
+        name = sys_obj.get("name") or sys_obj.get("title") or "System"
+        alias = make_alias(name)
+        # Ensure uniqueness
+        i = 2
+        orig = alias
+        while alias in system_alias.values():
+            alias = f"{orig}_{i}"
+            i += 1
+        system_alias[name] = alias
+
+    # Assign aliases for external systems
+    for ext in external_systems:
+        name = ext.get("name") or "ExternalSystem"
+        alias = make_alias(name)
+        i = 2
+        orig = alias
+        while alias in external_alias.values() or alias in system_alias.values():
+            alias = f"{orig}_{i}"
+            i += 1
+        external_alias[name] = alias
+
+    # Assign aliases for containers (names may not be unique across systems)
+    for cont in containers:
+        name = cont.get("name") or "Container"
+        sys_name = cont.get("system") or cont.get("belongs_to") or next((s.get("name") for s in systems), None)
+        key = (sys_name or "_global_", name)
+        alias = make_alias(f"{system_alias.get(sys_name, sys_name or 'Sys')}_{name}")
+        i = 2
+        orig = alias
+        while alias in container_alias.values() or alias in system_alias.values() or alias in external_alias.values():
+            alias = f"{orig}_{i}"
+            i += 1
+        container_alias[key] = alias
+
+    # Start building DSL
+    dsl_lines: List[str] = []
+    dsl_lines.append("workspace \"C4 Workspace\" \"Unified context+container view\" {")
+    dsl_lines.append("  model {")
+
+    # Software Systems (internal)
+    for sys_obj in systems:
+        name = sys_obj.get("name") or "System"
+        desc = sys_obj.get("description") or sys_obj.get("purpose") or ""
+        tech = sys_obj.get("technology") or ""
+        alias = system_alias[name]
+        header = f"    softwareSystem \"{name}\" as {alias}"
+        dsl_lines.append(header + " {")
+        if desc:
+            dsl_lines.append(f"      description \"{desc}\"")
+        if tech:
+            dsl_lines.append(f"      technology \"{tech}\"")
+
+        # Containers belonging to this system
+        for cont in [c for c in containers if (c.get("system") or c.get("belongs_to")) == name]:
+            c_name = cont.get("name") or "Container"
+            c_desc = cont.get("description") or cont.get("purpose") or ""
+            c_tech = cont.get("technology") or ""
+            c_alias = container_alias.get((name, c_name)) or make_alias(f"{alias}_{c_name}")
+            line = f"      container \"{c_name}\" as {c_alias}"
+            if c_desc and c_tech:
+                line += f" \"{c_desc}\" \"{c_tech}\""
+            elif c_desc:
+                line += f" \"{c_desc}\""
+            elif c_tech:
+                line += f" \"\" \"{c_tech}\""
+            dsl_lines.append(line)
+        dsl_lines.append("    }")
+
+    # External systems
+    for ext in external_systems:
+        name = ext.get("name") or "ExternalSystem"
+        desc = ext.get("description") or ext.get("purpose") or ""
+        tech = ext.get("technology") or ""
+        alias = external_alias[name]
+        line = f"    softwareSystem \"{name}\" as {alias} <<External>>"
+        dsl_lines.append(line + " {")
+        if desc:
+            dsl_lines.append(f"      description \"{desc}\"")
+        if tech:
+            dsl_lines.append(f"      technology \"{tech}\"")
+        dsl_lines.append("    }")
+
+    # Relationships
+    def rel_line(src_alias: str, dst_alias: str, rel: Dict[str, Any]) -> str:
+        desc = rel.get("description") or rel.get("interaction") or ""
+        tech = rel.get("technology") or ""
+        if desc and tech:
+            return f"    {src_alias} -> {dst_alias} \"{desc}\" \"{tech}\""
+        if desc:
+            return f"    {src_alias} -> {dst_alias} \"{desc}\""
+        if tech:
+            return f"    {src_alias} -> {dst_alias} \"\" \"{tech}\""
+        return f"    {src_alias} -> {dst_alias}"
+
+    # Build name to alias lookup
+    name_to_alias: Dict[str, str] = {**{k: v for k, v in system_alias.items()}, **{k: v for k, v in external_alias.items()}}
+    # Prefer container alias when name matches a container uniquely
+    for (sys_name, cont_name), alias in container_alias.items():
+        # if cont name unique across all containers, map by name for convenience
+        count = sum(1 for (s, c) in container_alias.keys() if c == cont_name)
+        if count == 1:
+            name_to_alias[cont_name] = alias
+
+    # Relationship lines
+    for rel in relationships:
+        src_name = rel.get("source") or rel.get("from")
+        dst_name = rel.get("destination") or rel.get("to")
+        if not src_name or not dst_name:
+            continue
+
+        # Try exact name matches first
+        src_alias = name_to_alias.get(src_name)
+        dst_alias = name_to_alias.get(dst_name)
+
+        # If not found, try container lookup assuming unique names or first system
+        if not src_alias:
+            # Try any container with that name
+            for (s, c), a in container_alias.items():
+                if c == src_name:
+                    src_alias = a
+                    break
+        if not dst_alias:
+            for (s, c), a in container_alias.items():
+                if c == dst_name:
+                    dst_alias = a
+                    break
+
+        # If still missing, skip this relationship
+        if not src_alias or not dst_alias:
+            continue
+
+        dsl_lines.append(rel_line(src_alias, dst_alias, rel))
+
+    dsl_lines.append("  }")  # end model
+
+    # Views: create one systemContext per internal system, and container view per internal system
+    dsl_lines.append("  views {")
+    for sys_obj in systems:
+        name = sys_obj.get("name") or "System"
+        alias = system_alias[name]
+        dsl_lines.append(f"    systemContext {alias} \"{name} - System Context\" {{")
+        dsl_lines.append("      include *")
+        dsl_lines.append("      autolayout lr")
+        dsl_lines.append("    }")
+
+        dsl_lines.append(f"    container {alias} \"{name} - Containers\" {{")
+        dsl_lines.append("      include *")
+        dsl_lines.append("      autolayout lr")
+        dsl_lines.append("    }")
+
+    # Basic styles
+    dsl_lines.append("    styles {")
+    dsl_lines.append("      element \"Software System\" { background #1168bd color #ffffff }")
+    dsl_lines.append("      element \"Container\" { background #438dd5 color #ffffff }")
+    dsl_lines.append("      element \"Component\" { background #85bbf0 color #000000 }")
+    dsl_lines.append("      element \"External\" { background #999999 color #ffffff }")
+    dsl_lines.append("    }")
+    dsl_lines.append("  }")  # end views
+    dsl_lines.append("}")  # end workspace
+
+    merged_dsl = "\n".join(dsl_lines)
+    return {**state, "dsl_context_container": merged_dsl}
 
 # Agent 5: Generate Component Diagram DSL
 def generate_component_dsl_node(state: C4State) -> C4State:
@@ -453,8 +709,9 @@ def create_c4_workflow() -> StateGraph:
     workflow.add_node("parse_spec", parse_spec_node)
     workflow.add_node("validate_architecture", validate_architecture_node)
     workflow.add_node("generate_context_dsl", generate_context_dsl_node)
-    workflow.add_node("generate_container_dsl", generate_container_dsl_node)
-    workflow.add_node("generate_component_dsl", generate_component_dsl_node)
+   # workflow.add_node("generate_container_dsl", generate_container_dsl_node)
+ #   workflow.add_node("merge_context_and_container", merge_context_and_container_node)
+  #  workflow.add_node("generate_component_dsl", generate_component_dsl_node)
     workflow.add_node("final_review", final_review_node)
     
     # Define the workflow
@@ -462,8 +719,9 @@ def create_c4_workflow() -> StateGraph:
     workflow.add_edge("parse_spec", "validate_architecture")
     workflow.add_edge("validate_architecture", "generate_context_dsl")
     workflow.add_edge("generate_context_dsl", "final_review")
-    #workflow.add_edge("generate_context_dsl", "generate_container_dsl")
-   # workflow.add_edge("generate_container_dsl", "generate_component_dsl")
+   # workflow.add_edge("generate_container_dsl", "merge_context_and_container")
+   # workflow.add_edge("merge_context_and_container", "final_review")
+    # workflow.add_edge("generate_container_dsl", "generate_component_dsl")
     #workflow.add_edge("generate_component_dsl", "final_review")
     workflow.add_edge("final_review", END)
     
@@ -499,6 +757,7 @@ def generate_c4_architecture(technical_spec: str) -> Dict[str, Any]:
         summary=None,
         dsl_context=None,
         dsl_container=None,
+        dsl_context_container=None,
         dsl_component=None,
         architecture_analysis=None
     )
@@ -522,6 +781,7 @@ def generate_c4_architecture(technical_spec: str) -> Dict[str, Any]:
             "dsl": {
                 "context": result.get("dsl_context"),
                 "container": result.get("dsl_container"),
+                "context_container": result.get("dsl_context_container"),
                 "component": result.get("dsl_component")
             },
             "architecture_analysis": result.get("architecture_analysis")
@@ -579,6 +839,14 @@ def save_dsl_files(result: Dict[str, Any], output_dir: str = "generated_c4") -> 
                 f.write(dsl["component"])
             saved_files.append(str(component_file))
             print(f"💾 Saved Component DSL: {component_file}")
+
+        # Save merged context+container DSL
+        if dsl.get("context_container"):
+            merged_file = Path(output_dir) / "context_container.dsl"
+            with open(merged_file, 'w') as f:
+                f.write(dsl["context_container"])
+            saved_files.append(str(merged_file))
+            print(f"💾 Saved Merged Context+Container DSL: {merged_file}")
         
         # Save summary and analysis
         summary_file = Path(output_dir) / "architecture_summary.json"

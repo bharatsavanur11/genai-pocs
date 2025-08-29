@@ -11,6 +11,7 @@ A comprehensive Python solution for generating C4 architecture diagrams from tec
 - **Relationship Mapping**: Automatically identifies and maps relationships between systems, containers, and components
 - **Technology Detection**: Recognizes technology stacks and implementation details
 - **Validation & Review**: Includes validation steps to ensure architectural consistency
+ - **Unified DSL Output**: Generates a single valid Structurizr DSL that nests containers inside systems (`context_container.dsl`)
 
 ## 📋 What is C4 Architecture?
 
@@ -80,6 +81,8 @@ if result.get("success"):
     # Save generated DSL files
     saved_files = save_dsl_files(result, "output_directory")
     print(f"Generated {len(saved_files)} files")
+    # Files include: system_context.dsl, container.dsl, component.dsl (if generated),
+    # and a unified context+container DSL at context_container.dsl
 ```
 
 ### Running the Demo
@@ -168,10 +171,18 @@ The generator produces:
 
 ### Model Configuration
 
-The generator uses GPT-4 by default. You can modify the model in the agent functions:
+The generator uses GPT-4.1 by default. You can modify the model in the agent functions:
 
 ```python
-llm = ChatOpenAI(model="gpt-4", api_key=api_key, temperature=0.1)
+llm = ChatOpenAI(model="gpt-4.1", api_key=api_key, temperature=0.1)
+
+## 🧩 Unified DSL (Systems + Containers)
+
+Along with separate DSLs, the generator creates a single Structurizr DSL that nests containers within their owning systems and wires relationships with stable aliases.
+
+- **File**: `context_container.dsl`
+- **Contents**: one `workspace` with `model { softwareSystem { container ... } }` and matching `views`/`styles`
+- **Purpose**: Import directly into Structurizr to see both context and container views in a single file
 ```
 
 ## 🎨 Customization
