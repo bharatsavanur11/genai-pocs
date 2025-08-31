@@ -50,14 +50,40 @@ CONVERSATION_HISTORY_FILE = "conversation_history.json"
 MAX_CONVERSATIONS = 50  # Maximum number of conversations to remember
 
 class ConversationMemory:
-    """Manages persistent conversation memory across sessions"""
+    """
+    Manages persistent conversation memory across sessions.
+    
+    This class provides a sophisticated memory system that:
+    - Stores conversations persistently across browser sessions
+    - Maintains a global context from all conversations
+    - Provides intelligent context retrieval and similarity scoring
+    - Handles memory size limits and summarization
+    
+    Attributes:
+        memory_file (str): Path to the pickle file storing memory data
+        memory (Dict): In-memory representation of stored conversations
+    """
     
     def __init__(self, memory_file: str = MEMORY_FILE):
+        """
+        Initialize the conversation memory system.
+        
+        Args:
+            memory_file (str): Path to the memory storage file
+        """
         self.memory_file = memory_file
         self.memory = self.load_memory()
     
     def load_memory(self) -> Dict[str, Any]:
-        """Load conversation memory from file"""
+        """
+        Load conversation memory from persistent storage.
+        
+        Attempts to load existing memory from pickle file. If loading fails
+        or no file exists, returns a default memory structure.
+        
+        Returns:
+            Dict: Memory structure with conversations, global context, and metadata
+        """
         try:
             if os.path.exists(self.memory_file):
                 with open(self.memory_file, 'rb') as f:
@@ -73,7 +99,12 @@ class ConversationMemory:
         }
     
     def save_memory(self):
-        """Save conversation memory to file"""
+        """
+        Save conversation memory to persistent storage.
+        
+        Serializes the current memory state to a pickle file and updates
+        the last_updated timestamp. Handles errors gracefully with warnings.
+        """
         try:
             self.memory['last_updated'] = datetime.now().isoformat()
             with open(self.memory_file, 'wb') as f:
@@ -83,7 +114,18 @@ class ConversationMemory:
     
     def add_conversation(self, conversation_id: str, spec_context: str, 
                         messages: List[Dict], result: Optional[Dict] = None):
-        """Add a new conversation to memory"""
+        """
+        Add a new conversation to the memory system.
+        
+        Creates a conversation record with metadata, adds it to the conversations
+        list, enforces memory limits, and updates the global context.
+        
+        Args:
+            conversation_id (str): Unique identifier for the conversation
+            spec_context (str): Technical specification context
+            messages (List[Dict]): List of chat messages
+            result (Optional[Dict]): C4 generation result if available
+        """
         conversation = {
             'id': conversation_id,
             'timestamp': datetime.now().isoformat(),
@@ -106,11 +148,30 @@ class ConversationMemory:
         self.save_memory()
     
     def _hash_content(self, content: str) -> str:
-        """Generate hash for content to detect duplicates"""
+        """
+        Generate MD5 hash for content to detect duplicates.
+        
+        Args:
+            content (str): Content to hash
+            
+        Returns:
+            str: MD5 hash string for duplicate detection
+        """
         return hashlib.md5(content.encode()).hexdigest()
     
     def _summarize_result(self, result: Dict) -> Optional[Dict]:
-        """Create a summary of C4 generation result"""
+        """
+        Create a summary of C4 generation result for storage.
+        
+        Extracts key metrics from the C4 generation result to create
+        a compact summary suitable for memory storage.
+        
+        Args:
+            result (Dict): C4 generation result dictionary
+            
+        Returns:
+            Optional[Dict]: Summary with counts and flags, or None if no result
+        """
         if not result or not result.get('success'):
             return None
         
@@ -123,7 +184,16 @@ class ConversationMemory:
         }
     
     def _update_global_context(self, new_context: str):
-        """Update global context with new information"""
+        """
+        Update global context with new information from conversations.
+        
+        Combines new context with existing global context. If the combined
+        context exceeds the maximum length, uses AI summarization to maintain
+        focus while preserving important architectural details.
+        
+        Args:
+            new_context (str): New technical specification context to add
+        """
         if not self.memory['global_context']:
             self.memory['global_context'] = new_context
         else:
@@ -164,7 +234,21 @@ class ConversationMemory:
                 self.memory['global_context'] = combined
     
     def get_relevant_context(self, current_context: str, max_results: int = 5) -> List[Dict]:
-        """Get relevant previous conversations based on current context"""
+        """
+        Get relevant previous conversations based on current context.
+        
+        Analyzes the current technical specification context and finds
+        previous conversations that are semantically similar. Uses content
+        hashing to avoid exact duplicates and similarity scoring to rank
+        relevance.
+        
+        Args:
+            current_context (str): Current technical specification context
+            max_results (int): Maximum number of relevant contexts to return
+            
+        Returns:
+            List[Dict]: List of relevant conversations with similarity scores
+        """
         if not current_context or not self.memory['conversations']:
             return []
         
@@ -191,7 +275,20 @@ class ConversationMemory:
         return relevant_conversations[:max_results]
     
     def _calculate_similarity(self, text1: str, text2: str) -> float:
-        """Calculate similarity between two texts using keyword matching"""
+        """
+        Calculate similarity between two texts using keyword matching.
+        
+        Uses Jaccard similarity (intersection over union) to measure
+        how similar two technical specifications are based on shared
+        technical terms and concepts.
+        
+        Args:
+            text1 (str): First text to compare
+            text2 (str): Second text to compare
+            
+        Returns:
+            float: Similarity score between 0.0 (no similarity) and 1.0 (identical)
+        """
         words1 = set(re.findall(r'\w+', text1.lower()))
         words2 = set(re.findall(r'\w+', text2.lower()))
         
@@ -204,11 +301,25 @@ class ConversationMemory:
         return len(intersection) / len(union) if union else 0.0
     
     def get_global_context(self) -> str:
-        """Get the global context from all conversations"""
+        """
+        Get the global context accumulated from all conversations.
+        
+        Returns the combined technical knowledge from all stored
+        conversations, which may be summarized if it exceeds length limits.
+        
+        Returns:
+            str: Global technical specification context
+        """
         return self.memory.get('global_context', "")
     
     def clear_memory(self):
-        """Clear all conversation memory"""
+        """
+        Clear all conversation memory and remove persistent storage.
+        
+        Resets the memory to initial state and attempts to remove
+        the memory file from disk. Useful for starting fresh or
+        troubleshooting memory issues.
+        """
         self.memory = {
             'conversations': [],
             'global_context': "",
@@ -225,24 +336,59 @@ class ConversationMemory:
             print(f"Warning: Could not remove memory file: {e}")
 
 class ContextManager:
-    """Manages technical specification context and merging"""
+    """
+    Manages technical specification context and intelligent merging.
+    
+    This class handles the intelligent combination of technical specifications
+    from multiple conversations, manages context overflow, and provides
+    smart context merging capabilities.
+    
+    Attributes:
+        memory (ConversationMemory): Reference to the conversation memory system
+        current_session_id (str): Unique identifier for the current session
+    """
     
     def __init__(self, conversation_memory: ConversationMemory):
+        """
+        Initialize the context manager.
+        
+        Args:
+            conversation_memory (ConversationMemory): Memory system to use for context operations
+        """
         self.memory = conversation_memory
         self.current_session_id = self._generate_session_id()
     
     def _generate_session_id(self) -> str:
-        """Generate unique session ID"""
+        """
+        Generate unique session identifier.
+        
+        Creates a unique session ID using timestamp and process ID
+        to ensure uniqueness across multiple instances and sessions.
+        
+        Returns:
+            str: Unique session identifier
+        """
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         return f"session_{timestamp}_{os.getpid()}"
     
     def merge_contexts(self, current_context: str, new_input: str, 
                       use_global_context: bool = True) -> Tuple[str, List[Dict]]:
         """
-        Merge current context with new input and relevant previous contexts
+        Merge current context with new input and relevant previous contexts.
         
+        Intelligently combines the current technical specification context with
+        new input and finds relevant previous conversations to enhance the
+        specification. Handles context overflow through AI summarization.
+        
+        Args:
+            current_context (str): Existing technical specification context
+            new_input (str): New technical specification input to add
+            use_global_context (bool): Whether to search for relevant previous contexts
+            
         Returns:
-            Tuple of (merged_context, relevant_previous_contexts)
+            Tuple[str, List[Dict]]: (merged_context, relevant_previous_contexts)
+                - merged_context: Combined technical specification
+                - relevant_previous_contexts: List of relevant previous conversations
         """
         # Start with current context
         merged_context = current_context if current_context else ""
@@ -270,7 +416,19 @@ class ContextManager:
         return merged_context, relevant_contexts
     
     def _summarize_context(self, context: str) -> str:
-        """Summarize context while preserving important details"""
+        """
+        Summarize context while preserving important architectural details.
+        
+        Uses AI to create a concise summary of technical specifications
+        when the combined context exceeds length limits. Preserves key
+        architectural information while reducing size.
+        
+        Args:
+            context (str): Technical specification context to summarize
+            
+        Returns:
+            str: Summarized context under length limit
+        """
         try:
             llm = ChatOpenAI(
                 model="gpt-4", 
@@ -303,7 +461,21 @@ class ContextManager:
     
     def create_conversation_summary(self, spec_context: str, messages: List[Dict], 
                                   result: Optional[Dict] = None) -> Dict:
-        """Create a summary of the current conversation"""
+        """
+        Create a summary of the current conversation for memory storage.
+        
+        Generates a structured summary of the current conversation including
+        session metadata, technical specification context, and C4 generation
+        results for persistent storage.
+        
+        Args:
+            spec_context (str): Current technical specification context
+            messages (List[Dict]): List of chat messages in the conversation
+            result (Optional[Dict]): C4 generation result if available
+            
+        Returns:
+            Dict: Structured conversation summary for memory storage
+        """
         return {
             'session_id': self.current_session_id,
             'timestamp': datetime.now().isoformat(),
@@ -315,7 +487,20 @@ class ContextManager:
 
 # Initialize session state
 def init_session_state():
-    """Initialize session state variables"""
+    """
+    Initialize Streamlit session state variables for the chatbot.
+    
+    Sets up all necessary session state variables including:
+    - Chat messages and history
+    - Technical specification context
+    - C4 generation results
+    - Conversation memory system
+    - Context management
+    - UI state variables
+    
+    This function ensures all required state variables exist
+    before the chatbot interface is rendered.
+    """
     if "messages" not in st.session_state:
         st.session_state.messages = []
     if "spec_context" not in st.session_state:
@@ -338,7 +523,21 @@ def init_session_state():
 def filter_relevant_content(text: str) -> str:
     """
     Filter out content that is not relevant to technical specifications.
-    Uses AI to identify and remove irrelevant content.
+    
+    Uses AI to intelligently identify and extract only content related to
+    software/system architecture, technical requirements, or system design.
+    Removes personal conversations, non-technical discussions, and irrelevant
+    content to maintain focus on technical specifications.
+    
+    Args:
+        text (str): User input text to filter
+        
+    Returns:
+        str: Filtered text containing only relevant technical content,
+             or empty string if no relevant content found
+        
+    Raises:
+        Exception: If AI filtering fails, returns original text as fallback
     """
     try:
         llm = ChatOpenAI(
@@ -381,7 +580,20 @@ def filter_relevant_content(text: str) -> str:
 def extract_technical_spec(text: str) -> str:
     """
     Extract technical specification content from user input.
-    Uses AI to identify and extract technical architecture information.
+    
+    Uses AI to intelligently identify and extract technical architecture
+    information from user input, focusing on system components, technology
+    choices, data flows, and architectural patterns. Formats the output
+    as structured technical specifications suitable for C4 diagram generation.
+    
+    Args:
+        text (str): User input text to extract technical specifications from
+        
+    Returns:
+        str: Structured technical specification content
+        
+    Raises:
+        Exception: If AI extraction fails, returns original text as fallback
     """
     try:
         llm = ChatOpenAI(
@@ -417,7 +629,22 @@ def extract_technical_spec(text: str) -> str:
 def update_spec_context(new_input: str) -> Tuple[str, List[Dict]]:
     """
     Update the technical specification context with new input.
-    Now uses intelligent context merging with previous conversations.
+    
+    Intelligently merges new technical specification input with existing
+    context using the ContextManager. Automatically finds relevant previous
+    conversations and combines them to build comprehensive specifications.
+    
+    Args:
+        new_input (str): New technical specification input to add
+        
+    Returns:
+        Tuple[str, List[Dict]]: (merged_context, relevant_contexts)
+            - merged_context: Combined technical specification context
+            - relevant_contexts: List of relevant previous conversations found
+            
+    Note:
+        This function automatically updates the session state with relevant
+        contexts for display in the UI.
     """
     context_manager = st.session_state.context_manager
     current_context = st.session_state.spec_context
@@ -434,7 +661,19 @@ def update_spec_context(new_input: str) -> Tuple[str, List[Dict]]:
 
 def generate_c4_from_context() -> Optional[Dict[str, Any]]:
     """
-    Generate C4 architecture from the current specification context
+    Generate C4 architecture from the current specification context.
+    
+    Uses the current technical specification context stored in session state
+    to generate C4 architecture diagrams. Displays a loading spinner during
+    generation and handles errors gracefully.
+    
+    Returns:
+        Optional[Dict[str, Any]]: C4 generation result dictionary if successful,
+                                  None if no context available or generation fails
+        
+    Note:
+        This function requires a valid technical specification context to be
+        present in st.session_state.spec_context.
     """
     if not st.session_state.spec_context.strip():
         return None
@@ -448,7 +687,19 @@ def generate_c4_from_context() -> Optional[Dict[str, Any]]:
         return None
 
 def render_sidebar():
-    """Render the sidebar with controls and information"""
+    """
+    Render the sidebar with chatbot controls and information.
+    
+    Creates a comprehensive sidebar containing:
+    - API key status and configuration
+    - Memory management controls
+    - Output directory settings
+    - File save/export functionality
+    - Conversation management tools
+    
+    The sidebar provides easy access to all chatbot configuration
+    and management features while keeping the main interface clean.
+    """
     st.sidebar.header("🤖 Chatbot Controls")
     
     # API key status
@@ -877,7 +1128,22 @@ def render_examples():
                 st.rerun()
 
 def main():
-    """Main application function"""
+    """
+    Main application function for the C4 Architecture Generator Chatbot.
+    
+    Sets up the Streamlit page configuration, initializes the application
+    state, and renders the complete chatbot interface including:
+    - Page title and configuration
+    - Session state initialization
+    - Sidebar with controls
+    - Main chat interface
+    - Technical specification context
+    - C4 generation results
+    - Examples and memory statistics
+    
+    The interface is organized in a two-column layout for optimal
+    user experience and efficient use of screen space.
+    """
     st.set_page_config(
         page_title=APP_TITLE,
         page_icon="🏗️",
