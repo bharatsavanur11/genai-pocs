@@ -30,6 +30,7 @@ from pathlib import Path
 from typing import Dict, Any, List, Optional, Tuple
 from datetime import datetime, timedelta
 import hashlib
+import uuid
 
 import streamlit as st
 from langchain_openai import ChatOpenAI
@@ -48,6 +49,247 @@ MAX_CONTEXT_LENGTH = 8000  # Maximum context length to prevent token overflow
 MEMORY_FILE = "chatbot_memory.pkl"
 CONVERSATION_HISTORY_FILE = "conversation_history.json"
 MAX_CONVERSATIONS = 50  # Maximum number of conversations to remember
+
+class APIKeyManager:
+    """
+    Centralized API key management for the C4 chatbot.
+    
+    This class provides a unified way to:
+    - Extract API keys from multiple sources (environment, Streamlit secrets, .env files)
+    - Validate API key presence and format
+    - Provide consistent error handling and user feedback
+    - Cache API key for performance
+    
+    Attributes:
+        _api_key (Optional[str]): Cached API key value
+        _key_sources (List[str]): List of sources checked for API key
+    """
+    
+    def __init__(self):
+        """Initialize the API key manager."""
+        self._api_key = None
+        self._key_sources = []
+        self._load_api_key()
+    
+    def _load_api_key(self):
+        """
+        Load API key from multiple sources in order of priority.
+        
+        Sources checked (in order):
+        1. Streamlit secrets first (for Streamlit Cloud deployment)
+        2. Environment variables (.env file or system environment)
+        3. Direct environment variable access
+        """
+        # Try Streamlit secrets first (for Streamlit Cloud)
+        try:
+            import streamlit as st
+            if hasattr(st, 'secrets') and 'OPENAI_API_KEY' in st.secrets:
+                self._api_key = st.secrets["OPENAI_API_KEY"]
+                self._key_sources.append("Streamlit Secrets")
+                return
+        except Exception:
+            pass
+        
+        # Try environment variables
+        env_key = os.getenv("OPENAI_API_KEY")
+        if env_key:
+            self._api_key = env_key
+            self._key_sources.append("Environment Variable")
+            return
+        
+        # Try .env file directly
+        try:
+            from dotenv import load_dotenv
+            load_dotenv(override=True)
+            env_key = os.getenv("OPENAI_API_KEY")
+            if env_key:
+                self._api_key = env_key
+                self._key_sources.append(".env File")
+                return
+        except Exception:
+            pass
+        
+        # No API key found
+        self._api_key = None
+        self._key_sources = []
+    
+    def get_api_key(self) -> Optional[str]:
+        """
+        Get the current API key.
+        
+        Returns:
+            Optional[str]: The API key if available, None otherwise
+        """
+        return self._api_key
+    
+    def is_api_key_available(self) -> bool:
+        """
+        Check if an API key is available.
+        
+        Returns:
+            bool: True if API key is available, False otherwise
+        """
+        return bool(self._api_key)
+    
+    def get_api_key_status(self) -> Dict[str, Any]:
+        """
+        Get comprehensive API key status information.
+        
+        Returns:
+            Dict[str, Any]: Status information including availability, sources, and validation
+        """
+        status = {
+            "available": self.is_api_key_available(),
+            "sources": self._key_sources.copy(),
+            "key_length": len(self._api_key) if self._api_key else 0,
+            "key_prefix": self._api_key[:7] + "..." if self._api_key and len(self._api_key) > 7 else None,
+            "validation": self._validate_api_key_format()
+        }
+        return status
+    
+    def _validate_api_key_format(self) -> Dict[str, Any]:
+        """
+        Validate the API key format (basic validation).
+        
+        Returns:
+            Dict[str, Any]: Validation results
+        """
+        if not self._api_key:
+            return {"valid": False, "error": "No API key available"}
+        
+        # Basic OpenAI API key validation
+        if not self._api_key.startswith("sk-"):
+            return {"valid": False, "error": "Invalid OpenAI API key format (should start with 'sk-')"}
+        
+        if len(self._api_key) < 20:
+            return {"valid": False, "error": "API key too short"}
+        
+        return {"valid": True, "error": None}
+    
+    def refresh_api_key(self):
+        """
+        Refresh the API key from sources.
+        
+        Useful when the API key might have been updated during runtime.
+        """
+        self._api_key = None
+        self._key_sources = []
+        self._load_api_key()
+    
+    def get_chat_openai_instance(self, model: str = "gpt-4", temperature: float = 0.1) -> ChatOpenAI:
+        """
+        Create a ChatOpenAI instance with the managed API key.
+        
+        Args:
+            model (str): OpenAI model to use (default: "gpt-4")
+            temperature (float): Model temperature (default: 0.1)
+            
+        Returns:
+            ChatOpenAI: Configured ChatOpenAI instance
+            
+        Raises:
+            ValueError: If no API key is available
+        """
+        if not self.is_api_key_available():
+            raise ValueError("OpenAI API key not available. Please set OPENAI_API_KEY in your environment or .env file.")
+        
+        return ChatOpenAI(
+            model=model,
+            api_key=self._api_key,
+            temperature=temperature
+        )
+    
+    def get_api_key_display_info(self) -> str:
+        """
+        Get user-friendly API key status information.
+        
+        Returns:
+            str: Formatted status message for display
+        """
+        if self.is_api_key_available():
+            validation = self._validate_api_key_format()
+            if validation["valid"]:
+                return f"✅ OpenAI API Key Available (from: {', '.join(self._key_sources)})"
+            else:
+                return f"⚠️ API Key Found but Invalid: {validation['error']}"
+        else:
+            return "❌ OpenAI API Key Missing"
+    
+    def get_setup_instructions(self) -> str:
+        """
+        Get instructions for setting up the API key.
+        
+        Returns:
+            str: Setup instructions for users
+        """
+        return """
+        To set up your OpenAI API key:
+        
+        1. **Environment Variable (Recommended):**
+           ```bash
+           export OPENAI_API_KEY='your-api-key-here'
+           ```
+        
+        2. **Create a .env file:**
+           Create a file named `.env` in the project directory with:
+           ```
+           OPENAI_API_KEY=your-api-key-here
+           ```
+        
+        3. **Streamlit Secrets (for Streamlit Cloud):**
+           Add to your Streamlit secrets configuration
+        
+        **Note:** Replace 'your-api-key-here' with your actual OpenAI API key.
+        You can get one from: https://platform.openai.com/api-keys
+        """
+
+# Global API key manager instance
+api_key_manager = APIKeyManager()
+
+def check_api_key_availability() -> bool:
+    """
+    Check if API key is available for AI operations.
+    
+    Returns:
+        bool: True if API key is available and valid, False otherwise
+    """
+    return api_key_manager.is_api_key_available() and api_key_manager.get_api_key_status()["validation"]["valid"]
+
+def get_api_key_error_message() -> str:
+    """
+    Get a user-friendly error message when API key is not available.
+    
+    Returns:
+        str: Error message explaining the issue and how to fix it
+    """
+    status = api_key_manager.get_api_key_status()
+    
+    if not status["available"]:
+        return "❌ OpenAI API key not found. Please set your API key to use AI features."
+    
+    if not status["validation"]["valid"]:
+        return f"⚠️ API key validation failed: {status['validation']['error']}"
+    
+    return "✅ API key is available and valid."
+
+def require_api_key(func):
+    """
+    Decorator to require API key availability for functions.
+    
+    Args:
+        func: Function to decorate
+        
+    Returns:
+        Decorated function that checks API key before execution
+    """
+    def wrapper(*args, **kwargs):
+        if not check_api_key_availability():
+            st.error(get_api_key_error_message())
+            with st.expander("📋 How to set up your API key"):
+                st.markdown(api_key_manager.get_setup_instructions())
+            return None
+        return func(*args, **kwargs)
+    return wrapper
 
 class ConversationMemory:
     """
@@ -154,7 +396,7 @@ class ConversationMemory:
         Args:
             content (str): Content to hash
             
-        Returns:
+        Returns: 
             str: MD5 hash string for duplicate detection
         """
         return hashlib.md5(content.encode()).hexdigest()
@@ -203,11 +445,7 @@ class ConversationMemory:
             # If too long, summarize
             if len(combined) > MAX_CONTEXT_LENGTH:
                 try:
-                    llm = ChatOpenAI(
-                        model="gpt-4", 
-                        api_key=os.getenv("OPENAI_API_KEY"), 
-                        temperature=0.1
-                    )
+                    llm = api_key_manager.get_chat_openai_instance(model="gpt-4", temperature=0.1)
                     
                     prompt = f"""
                     Summarize the following combined technical specifications while preserving all important architectural details:
@@ -430,11 +668,7 @@ class ContextManager:
             str: Summarized context under length limit
         """
         try:
-            llm = ChatOpenAI(
-                model="gpt-4", 
-                api_key=os.getenv("OPENAI_API_KEY"), 
-                temperature=0.1
-            )
+            llm = api_key_manager.get_chat_openai_instance(model="gpt-4", temperature=0.1)
             
             prompt = f"""
             Summarize the following technical specification while preserving all important architectural details:
@@ -485,40 +719,262 @@ class ContextManager:
             'context_length': len(spec_context)
         }
 
+class ConversationTab:
+    """
+    Represents a single conversation tab in the Streamlit UI.
+    
+    Attributes:
+        id (str): Unique identifier for the tab
+        title (str): Title of the tab
+        messages (List[Dict]): List of chat messages for this tab
+        spec_context (str): Current technical specification context for this tab
+        current_result (Optional[Dict]): C4 generation result for this tab
+    """
+    
+    def __init__(self, tab_id: str, title: str):
+        self.id = tab_id
+        self.title = title
+        self.messages: List[Dict] = []
+        self.spec_context: str = ""
+        self.current_result: Optional[Dict] = None
+
+    def get_summary(self) -> Dict:
+        """
+        Get a summary of the tab's current state.
+        
+        Returns:
+            Dict: Summary of tab info, messages, and context length
+        """
+        return {
+            "tab_id": self.id,
+            "title": self.title,
+            "message_count": len(self.messages),
+            "context_length": len(self.spec_context)
+        }
+
 # Initialize session state
 def init_session_state():
     """
-    Initialize Streamlit session state variables for the chatbot.
+    Initialize Streamlit session state variables for the chatbot with tab support.
     
     Sets up all necessary session state variables including:
-    - Chat messages and history
-    - Technical specification context
-    - C4 generation results
+    - Tab management system
+    - Chat messages and history for each tab
+    - Technical specification context for each tab
+    - C4 generation results for each tab
     - Conversation memory system
     - Context management
     - UI state variables
-    
-    This function ensures all required state variables exist
-    before the chatbot interface is rendered.
     """
-    if "messages" not in st.session_state:
-        st.session_state.messages = []
-    if "spec_context" not in st.session_state:
-        st.session_state.spec_context = ""
-    if "current_result" not in st.session_state:
-        st.session_state.current_result = None
-    if "chat_history" not in st.session_state:
-        st.session_state.chat_history = []
-    if "output_dir" not in st.session_state:
-        st.session_state.output_dir = "generated_c4"
+    if "tabs" not in st.session_state:
+        st.session_state.tabs = {}
+    
+    if "active_tab_id" not in st.session_state:
+        st.session_state.active_tab_id = None
+    
     if "conversation_memory" not in st.session_state:
         st.session_state.conversation_memory = ConversationMemory()
+    
     if "context_manager" not in st.session_state:
         st.session_state.context_manager = ContextManager(st.session_state.conversation_memory)
+    
+    if "output_dir" not in st.session_state:
+        st.session_state.output_dir = "generated_c4"
+    
     if "show_memory" not in st.session_state:
         st.session_state.show_memory = False
+    
     if "relevant_contexts" not in st.session_state:
         st.session_state.relevant_contexts = []
+    
+    # Create default tab if none exist
+    if not st.session_state.tabs:
+        create_new_tab("New Chat")
+    
+    # Set active tab if none is set
+    if not st.session_state.active_tab_id:
+        st.session_state.active_tab_id = list(st.session_state.tabs.keys())[0]
+
+def create_new_tab(title: str = None) -> str:
+    """
+    Create a new conversation tab.
+    
+    Args:
+        title (str): Optional title for the tab
+        
+    Returns:
+        str: ID of the newly created tab
+    """
+    tab_id = str(uuid.uuid4())
+    tab_title = title or f"Chat {len(st.session_state.tabs) + 1}"
+    
+    st.session_state.tabs[tab_id] = ConversationTab(tab_id, tab_title)
+    
+    # Set as active tab
+    st.session_state.active_tab_id = tab_id
+    
+    return tab_id
+
+def get_active_tab() -> ConversationTab:
+    """
+    Get the currently active conversation tab.
+    
+    Returns:
+        ConversationTab: The active tab object
+    """
+    if st.session_state.active_tab_id and st.session_state.active_tab_id in st.session_state.tabs:
+        return st.session_state.tabs[st.session_state.active_tab_id]
+    
+    # Fallback: return first available tab
+    if st.session_state.tabs:
+        first_tab_id = list(st.session_state.tabs.keys())[0]
+        st.session_state.active_tab_id = first_tab_id
+        return st.session_state.tabs[first_tab_id]
+    
+    # Create new tab if none exist
+    tab_id = create_new_tab()
+    return st.session_state.tabs[tab_id]
+
+def delete_tab(tab_id: str):
+    """
+    Delete a conversation tab.
+    
+    Args:
+        tab_id (str): ID of the tab to delete
+    """
+    if tab_id in st.session_state.tabs:
+        del st.session_state.tabs[tab_id]
+        
+        # If we deleted the active tab, switch to another one
+        if st.session_state.active_tab_id == tab_id:
+            if st.session_state.tabs:
+                st.session_state.active_tab_id = list(st.session_state.tabs.keys())[0]
+            else:
+                st.session_state.active_tab_id = None
+        
+        # Create a new tab if none exist
+        if not st.session_state.tabs:
+            create_new_tab()
+
+def render_tab_management():
+    """
+    Render the tab management interface with ChatGPT-style tabs.
+    """
+    st.markdown("---")
+    
+    # Tab creation button
+    col1, col2 = st.columns([1, 4])
+    with col1:
+        if st.button("➕ New Chat", type="primary"):
+            create_new_tab()
+            st.rerun()
+    
+    with col2:
+        st.caption("Create new conversation tabs to work on different technical specifications simultaneously")
+    
+    # Tab navigation
+    if st.session_state.tabs:
+        tab_names = []
+        tab_ids = []
+        
+        for tab_id, tab in st.session_state.tabs.items():
+            # Create tab name with status indicators
+            status_icon = "✅" if tab.current_result else "💬"
+            message_count = len(tab.messages)
+            tab_name = f"{status_icon} {tab.title}"
+            
+            if message_count > 0:
+                tab_name += f" ({message_count})"
+            
+            tab_names.append(tab_name)
+            tab_ids.append(tab_id)
+        
+        # Create tabs
+        if tab_names:
+            selected_tab_index = st.tabs(tab_names)
+            
+            # Handle tab selection
+            for i, tab_id in enumerate(tab_ids):
+                if selected_tab_index[i]:
+                    if st.session_state.active_tab_id != tab_id:
+                        st.session_state.active_tab_id = tab_id
+                        st.rerun()
+                    
+                    # Show tab actions in the selected tab
+                    with selected_tab_index[i]:
+                        render_tab_actions(tab_id)
+                        break
+    else:
+        st.info("No conversation tabs available. Create a new chat to get started!")
+
+def render_tab_actions(tab_id: str):
+    """
+    Render actions for a specific tab.
+    
+    Args:
+        tab_id (str): ID of the tab to render actions for
+    """
+    tab = st.session_state.tabs[tab_id]
+    
+    col1, col2, col3, col4 = st.columns([1, 1, 1, 1])
+    
+    with col1:
+        # Rename tab
+        new_title = st.text_input("Tab Title", value=tab.title, key=f"title_{tab_id}")
+        if new_title != tab.title:
+            tab.title = new_title
+            st.rerun()
+    
+    with col2:
+        # Export tab data
+        if st.button("📤 Export", key=f"export_{tab_id}"):
+            export_tab_data(tab)
+    
+    with col3:
+        # Clear tab
+        if st.button("🗑️ Clear", key=f"clear_{tab_id}"):
+            tab.messages = []
+            tab.spec_context = ""
+            tab.current_result = None
+            st.rerun()
+    
+    with col4:
+        # Delete tab (if more than one exists)
+        if len(st.session_state.tabs) > 1:
+            if st.button("❌ Delete", key=f"delete_{tab_id}"):
+                delete_tab(tab_id)
+                st.rerun()
+        else:
+            st.caption("Keep at least one tab")
+
+def export_tab_data(tab: ConversationTab):
+    """
+    Export tab data to a file.
+    
+    Args:
+        tab (ConversationTab): Tab to export
+    """
+    export_data = {
+        "tab_info": tab.get_summary(),
+        "messages": tab.messages,
+        "spec_context": tab.spec_context,
+        "current_result": tab.current_result
+    }
+    
+    # Create filename
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    filename = f"chat_export_{tab.title.replace(' ', '_')}_{timestamp}.json"
+    
+    # Convert to JSON string
+    json_str = json.dumps(export_data, indent=2, default=str)
+    
+    # Create download button
+    st.download_button(
+        label="📥 Download Export",
+        data=json_str,
+        file_name=filename,
+        mime="application/json"
+    )
 
 def filter_relevant_content(text: str) -> str:
     """
@@ -540,11 +996,7 @@ def filter_relevant_content(text: str) -> str:
         Exception: If AI filtering fails, returns original text as fallback
     """
     try:
-        llm = ChatOpenAI(
-            model="gpt-4", 
-            api_key=os.getenv("OPENAI_API_KEY"), 
-            temperature=0.1
-        )
+        llm = api_key_manager.get_chat_openai_instance(model="gpt-4", temperature=0.1)
         
         prompt = f"""
         You are a technical specification filter. Analyze the following text and extract ONLY content that is relevant to software/system architecture, technical requirements, or system design.
@@ -596,11 +1048,7 @@ def extract_technical_spec(text: str) -> str:
         Exception: If AI extraction fails, returns original text as fallback
     """
     try:
-        llm = ChatOpenAI(
-            model="gpt-4", 
-            api_key=os.getenv("OPENAI_API_KEY"), 
-            temperature=0.1
-        )
+        llm = api_key_manager.get_chat_openai_instance(model="gpt-4", temperature=0.1)
         
         prompt = f"""
         You are a technical architect. Extract technical specification information from the following text.
@@ -627,64 +1075,283 @@ def extract_technical_spec(text: str) -> str:
         return text
 
 def update_spec_context(new_input: str) -> Tuple[str, List[Dict]]:
-    """
-    Update the technical specification context with new input.
+    """Update technical specification context with new input"""
+    active_tab = get_active_tab()
     
-    Intelligently merges new technical specification input with existing
-    context using the ContextManager. Automatically finds relevant previous
-    conversations and combines them to build comprehensive specifications.
-    
-    Args:
-        new_input (str): New technical specification input to add
-        
-    Returns:
-        Tuple[str, List[Dict]]: (merged_context, relevant_contexts)
-            - merged_context: Combined technical specification context
-            - relevant_contexts: List of relevant previous conversations found
-            
-    Note:
-        This function automatically updates the session state with relevant
-        contexts for display in the UI.
-    """
-    context_manager = st.session_state.context_manager
-    current_context = st.session_state.spec_context
-    
-    # Merge contexts intelligently
-    merged_context, relevant_contexts = context_manager.merge_contexts(
-        current_context, new_input, use_global_context=True
+    # Use context manager to merge contexts
+    merged_context, relevant_contexts = st.session_state.context_manager.merge_contexts(
+        active_tab.spec_context, 
+        new_input, 
+        use_global_context=True
     )
-    
-    # Store relevant contexts for display
-    st.session_state.relevant_contexts = relevant_contexts
     
     return merged_context, relevant_contexts
 
 def generate_c4_from_context() -> Optional[Dict[str, Any]]:
-    """
-    Generate C4 architecture from the current specification context.
+    """Generate C4 architecture from current context"""
+    active_tab = get_active_tab()
     
-    Uses the current technical specification context stored in session state
-    to generate C4 architecture diagrams. Displays a loading spinner during
-    generation and handles errors gracefully.
-    
-    Returns:
-        Optional[Dict[str, Any]]: C4 generation result dictionary if successful,
-                                  None if no context available or generation fails
-        
-    Note:
-        This function requires a valid technical specification context to be
-        present in st.session_state.spec_context.
-    """
-    if not st.session_state.spec_context.strip():
+    if not active_tab.spec_context:
         return None
     
     try:
-        with st.spinner("🤖 Generating C4 Architecture..."):
-            result = generate_c4_architecture(st.session_state.spec_context)
+        with st.spinner("🏗️ Generating C4 Architecture..."):
+            result = generate_c4_architecture(active_tab.spec_context)
             return result
     except Exception as e:
-        st.error(f"Error generating C4 architecture: {e}")
+        st.error(f"❌ Error generating C4 architecture: {e}")
         return None
+
+def render_chat_interface():
+    """Render the main chat interface for the active tab"""
+    active_tab = get_active_tab()
+    
+    st.subheader(f"💬 {active_tab.title} - Technical Specification Chat")
+    
+    # Chat input
+    user_input = st.chat_input("Type your technical specification or ask questions...")
+    
+    if user_input:
+        # Add user message to active tab
+        active_tab.messages.append({"role": "user", "content": user_input})
+        
+        # Filter relevant content
+        relevant_content = filter_relevant_content(user_input)
+        
+        if relevant_content:
+            # Extract technical specification
+            tech_spec = extract_technical_spec(relevant_content)
+            
+            # Update context with intelligent merging
+            merged_context, relevant_contexts = update_spec_context(tech_spec)
+            active_tab.spec_context = merged_context
+            
+            # Add assistant response
+            assistant_response = f"✅ Added to technical specification:\n\n{tech_spec}"
+            
+            if relevant_contexts:
+                assistant_response += f"\n\n🔗 Found {len(relevant_contexts)} relevant previous conversations"
+            
+            active_tab.messages.append({"role": "assistant", "content": assistant_response})
+            
+            # Store relevant contexts for display
+            st.session_state.relevant_contexts = relevant_contexts
+            
+            # Auto-generate C4 if context is substantial
+            if len(active_tab.spec_context) > 100:
+                active_tab.current_result = generate_c4_from_context()
+                
+                # Save conversation to memory
+                if active_tab.current_result:
+                    summary = st.session_state.context_manager.create_conversation_summary(
+                        active_tab.spec_context,
+                        active_tab.messages,
+                        active_tab.current_result
+                    )
+                    st.session_state.conversation_memory.add_conversation(
+                        summary['session_id'],
+                        active_tab.spec_context,
+                        active_tab.messages,
+                        active_tab.current_result
+                    )
+        else:
+            # No relevant content found
+            active_tab.messages.append({
+                "role": "assistant", 
+                "content": "❌ No relevant technical content found in your message. Please provide technical specifications, system architecture details, or technology requirements."
+            })
+    
+    # Display chat messages for active tab
+    for message in active_tab.messages:
+        with st.chat_message(message["role"]):
+            st.write(message["content"])
+
+def render_spec_context():
+    """Render the current technical specification context for the active tab"""
+    active_tab = get_active_tab()
+    
+    st.subheader("📋 Current Technical Specification")
+    
+    if active_tab.spec_context:
+        with st.expander("View/Edit Specification Context", expanded=True):
+            edited_spec = st.text_area(
+                "Technical Specification Context",
+                value=active_tab.spec_context,
+                height=200,
+                key=f"spec_editor_{active_tab.id}"
+            )
+            
+            if edited_spec != active_tab.spec_context:
+                active_tab.spec_context = edited_spec
+                active_tab.current_result = None  # Reset result when spec changes
+            
+            col1, col2, col3 = st.columns([1, 1, 1])
+            with col1:
+                if st.button("🔄 Regenerate C4", key=f"regenerate_{active_tab.id}", type="primary"):
+                    active_tab.current_result = generate_c4_from_context()
+            with col2:
+                if st.button("📝 Clear Specification", key=f"clear_spec_{active_tab.id}"):
+                    active_tab.spec_context = ""
+                    active_tab.current_result = None
+                    st.success("✅ Specification cleared")
+            with col3:
+                if st.button("🧠 Save to Memory", key=f"save_memory_{active_tab.id}"):
+                    if active_tab.spec_context:
+                        summary = st.session_state.context_manager.create_conversation_summary(
+                            active_tab.spec_context,
+                            active_tab.messages,
+                            active_tab.current_result
+                        )
+                        st.session_state.conversation_memory.add_conversation(
+                            summary['session_id'],
+                            active_tab.spec_context,
+                            active_tab.messages,
+                            active_tab.current_result
+                        )
+                        st.success("✅ Conversation saved to memory")
+    else:
+        st.info("💡 Start chatting to build your technical specification!")
+        st.caption("The specification will be built automatically as you provide technical details")
+
+def render_c4_results():
+    """Render C4 generation results for the active tab"""
+    active_tab = get_active_tab()
+    
+    st.subheader("🏗️ C4 Architecture Results")
+    
+    if active_tab.current_result and active_tab.current_result.get("success"):
+        result = active_tab.current_result
+        
+        # Create tabs for different views
+        tab1, tab2, tab3, tab4, tab5 = st.tabs([
+            "📊 Unified View", 
+            "🌐 System Context", 
+            "📦 Container", 
+            "🔧 Component",
+            "👥 User-Centric"
+        ])
+        
+        with tab1:
+            st.subheader("📊 Unified Architecture View")
+            if result.get("summary"):
+                st.write(result["summary"])
+            
+            # Display architecture elements
+            col1, col2 = st.columns(2)
+            
+            with col1:
+                if result.get("systems"):
+                    st.write("**Systems:**")
+                    for system in result["systems"]:
+                        st.write(f"- {system.get('name', 'Unknown')}: {system.get('description', 'No description')}")
+                
+                if result.get("containers"):
+                    st.write("**Containers:**")
+                    for container in result["containers"]:
+                        st.write(f"- {container.get('name', 'Unknown')}: {container.get('description', 'No description')}")
+            
+            with col2:
+                if result.get("components"):
+                    st.write("**Components:**")
+                    for component in result["components"]:
+                        st.write(f"- {component.get('name', 'Unknown')}: {component.get('description', 'No description')}")
+                
+                if result.get("relationships"):
+                    st.write("**Relationships:**")
+                    for rel in result["relationships"][:5]:  # Show first 5
+                        st.write(f"- {rel.get('source', 'Unknown')} → {rel.get('destination', 'Unknown')}")
+        
+        with tab2:
+            st.subheader("🌐 System Context DSL")
+            if result.get("dsl", {}).get("context"):
+                st.code(result["dsl"]["context"], language="text")
+            else:
+                st.info("No system context DSL generated yet")
+        
+        with tab3:
+            st.subheader("📦 Container DSL")
+            if result.get("dsl", {}).get("container"):
+                st.code(result["dsl"]["container"], language="text")
+            else:
+                st.info("No container DSL generated yet")
+        
+        with tab4:
+            st.subheader("🔧 Component DSL")
+            if result.get("dsl", {}).get("component"):
+                st.code(result["dsl"]["component"], language="text")
+            else:
+                st.info("No component DSL generated yet")
+        
+        with tab5:
+            st.subheader("👥 User-Centric DSL")
+            if result.get("dsl", {}).get("user_centric"):
+                st.code(result["dsl"]["user_centric"], language="text")
+            else:
+                st.info("No user-centric DSL generated yet")
+        
+        # Export and save options
+        st.markdown("---")
+        col1, col2, col3 = st.columns([1, 1, 1])
+        
+        with col1:
+            if st.button("💾 Save DSL Files", key=f"save_dsl_{active_tab.id}"):
+                try:
+                    saved_files = save_dsl_files(result, st.session_state.output_dir)
+                    st.success(f"✅ Saved {len(saved_files)} files to {st.session_state.output_dir}")
+                except Exception as e:
+                    st.error(f"❌ Error saving files: {e}")
+        
+        with col2:
+            if st.button("📥 Download JSON", key=f"download_json_{active_tab.id}"):
+                json_str = json.dumps(result, indent=2, default=str)
+                st.download_button(
+                    label="📥 Download",
+                    data=json_str,
+                    file_name=f"c4_architecture_{active_tab.title.replace(' ', '_')}.json",
+                    mime="application/json"
+                )
+        
+        with col3:
+            if st.button("🔄 Regenerate", key=f"regenerate_c4_{active_tab.id}"):
+                active_tab.current_result = generate_c4_from_context()
+                st.rerun()
+    
+    elif active_tab.current_result and not active_tab.current_result.get("success"):
+        st.error("❌ C4 Generation Failed")
+        st.write(f"Error: {active_tab.current_result.get('error', 'Unknown error')}")
+        
+        if st.button("🔄 Retry", key=f"retry_{active_tab.id}"):
+            active_tab.current_result = generate_c4_from_context()
+            st.rerun()
+    
+    else:
+        st.info("💡 No C4 architecture generated yet. Build your technical specification first!")
+
+def render_relevant_contexts():
+    """Render relevant previous contexts for the active tab"""
+    active_tab = get_active_tab()
+    
+    if st.session_state.relevant_contexts:
+        st.subheader("🔗 Relevant Previous Contexts")
+        
+        for i, context in enumerate(st.session_state.relevant_contexts):
+            with st.expander(f"📋 Context {i+1} (Similarity: {context.get('similarity', 0):.2f})"):
+                st.write(f"**Timestamp:** {context.get('timestamp', 'Unknown')}")
+                st.write(f"**Context Length:** {context.get('context_length', 0)} characters")
+                
+                if context.get('spec_context'):
+                    st.write("**Technical Specification:**")
+                    st.text_area(
+                        f"Context {i+1}",
+                        value=context['spec_context'],
+                        height=100,
+                        key=f"context_{i}_{active_tab.id}",
+                        disabled=True
+                    )
+                
+                if context.get('result_summary'):
+                    st.write("**Previous Result Summary:**")
+                    st.json(context['result_summary'])
 
 def render_sidebar():
     """
@@ -703,12 +1370,32 @@ def render_sidebar():
     st.sidebar.header("🤖 Chatbot Controls")
     
     # API key status
-    api_present = bool(os.getenv("OPENAI_API_KEY"))
-    if api_present:
-        st.sidebar.success("✅ OpenAI API Key Detected")
+    api_status = api_key_manager.get_api_key_status()
+    
+    if api_status["available"]:
+        if api_status["validation"]["valid"]:
+            st.sidebar.success(api_key_manager.get_api_key_display_info())
+            
+            # Show additional API key info in expander
+            with st.sidebar.expander("🔑 API Key Details"):
+                st.info(f"**Source:** {', '.join(api_status['sources'])}")
+                st.info(f"**Key Length:** {api_status['key_length']} characters")
+                if api_status['key_prefix']:
+                    st.info(f"**Key Prefix:** {api_status['key_prefix']}")
+                
+                # Refresh button
+                if st.button("🔄 Refresh API Key", key="refresh_api_key"):
+                    api_key_manager.refresh_api_key()
+                    st.success("✅ API Key refreshed")
+                    st.rerun()
+        else:
+            st.sidebar.warning(f"⚠️ API Key Issue: {api_status['validation']['error']}")
     else:
         st.sidebar.error("❌ OpenAI API Key Missing")
-        st.sidebar.info("Set OPENAI_API_KEY in your environment or .env file")
+        
+        # Show setup instructions
+        with st.sidebar.expander("📋 Setup Instructions"):
+            st.markdown(api_key_manager.get_setup_instructions())
     
     st.sidebar.divider()
     
@@ -833,230 +1520,6 @@ def render_memory_stats():
                 st.success("✅ Loaded global context")
                 st.rerun()
 
-def render_relevant_contexts():
-    """Render relevant previous contexts"""
-    if not st.session_state.relevant_contexts:
-        return
-    
-    st.subheader("🔗 Relevant Previous Contexts")
-    st.info("The following previous conversations were found to be relevant to your current specification:")
-    
-    for i, ctx in enumerate(st.session_state.relevant_contexts):
-        with st.expander(f"📋 {ctx['id']} (Similarity: {ctx['similarity']:.2f})"):
-            st.write(f"**Timestamp:** {ctx['timestamp']}")
-            st.write(f"**Message Count:** {ctx['message_count']}")
-            st.write(f"**Context:** {ctx['spec_context'][:200]}...")
-            
-            if st.button(f"Append Context {i+1}", key=f"append_{i}"):
-                current_spec = st.session_state.spec_context
-                if current_spec:
-                    st.session_state.spec_context = f"{current_spec}\n\nAppended Context:\n{ctx['spec_context']}"
-                else:
-                    st.session_state.spec_context = ctx['spec_context']
-                
-                st.session_state.current_result = None
-                st.success(f"✅ Appended relevant context from {ctx['id']}")
-                st.rerun()
-
-def render_chat_interface():
-    """Render the main chat interface"""
-    st.subheader("💬 Technical Specification Chat")
-    
-    # Chat input
-    user_input = st.chat_input("Type your technical specification or ask questions...")
-    
-    if user_input:
-        # Add user message to chat
-        st.session_state.messages.append({"role": "user", "content": user_input})
-        
-        # Filter relevant content
-        relevant_content = filter_relevant_content(user_input)
-        
-        if relevant_content:
-            # Extract technical specification
-            tech_spec = extract_technical_spec(relevant_content)
-            
-            # Update context with intelligent merging
-            merged_context, relevant_contexts = update_spec_context(tech_spec)
-            st.session_state.spec_context = merged_context
-            
-            # Add assistant response
-            assistant_response = f"✅ Added to technical specification:\n\n{tech_spec}"
-            
-            if relevant_contexts:
-                assistant_response += f"\n\n🔗 Found {len(relevant_contexts)} relevant previous conversations"
-            
-            st.session_state.messages.append({"role": "assistant", "content": assistant_response})
-            
-            # Store in chat history
-            st.session_state.chat_history.append({
-                "timestamp": datetime.now().isoformat(),
-                "user_input": user_input,
-                "relevant_content": relevant_content,
-                "tech_spec": tech_spec,
-                "merged_context": merged_context
-            })
-            
-            # Auto-generate C4 if context is substantial
-            if len(st.session_state.spec_context) > 100:
-                st.session_state.current_result = generate_c4_from_context()
-                
-                # Save conversation to memory
-                if st.session_state.current_result:
-                    summary = st.session_state.context_manager.create_conversation_summary(
-                        st.session_state.spec_context,
-                        st.session_state.messages,
-                        st.session_state.current_result
-                    )
-                    st.session_state.conversation_memory.add_conversation(
-                        summary['session_id'],
-                        st.session_state.spec_context,
-                        st.session_state.messages,
-                        st.session_state.current_result
-                    )
-        else:
-            # No relevant content found
-            st.session_state.messages.append({
-                "role": "assistant", 
-                "content": "❌ No relevant technical content found in your message. Please provide technical specifications, system architecture details, or technology requirements."
-            })
-    
-    # Display chat messages
-    for message in st.session_state.messages:
-        with st.chat_message(message["role"]):
-            st.write(message["content"])
-
-def render_spec_context():
-    """Render the current technical specification context"""
-    st.subheader("📋 Current Technical Specification")
-    
-    if st.session_state.spec_context:
-        with st.expander("View/Edit Specification Context", expanded=True):
-            edited_spec = st.text_area(
-                "Technical Specification Context",
-                value=st.session_state.spec_context,
-                height=200,
-                key="spec_editor"
-            )
-            
-            if edited_spec != st.session_state.spec_context:
-                st.session_state.spec_context = edited_spec
-                st.session_state.current_result = None  # Reset result when spec changes
-            
-            col1, col2, col3 = st.columns([1, 1, 1])
-            with col1:
-                if st.button("🔄 Regenerate C4", type="primary"):
-                    st.session_state.current_result = generate_c4_from_context()
-            with col2:
-                if st.button("📝 Clear Specification"):
-                    st.session_state.spec_context = ""
-                    st.session_state.current_result = None
-                    st.success("✅ Specification cleared")
-            with col3:
-                if st.button("🧠 Save to Memory"):
-                    if st.session_state.spec_context:
-                        summary = st.session_state.context_manager.create_conversation_summary(
-                            st.session_state.spec_context,
-                            st.session_state.messages,
-                            st.session_state.current_result
-                        )
-                        st.session_state.conversation_memory.add_conversation(
-                            summary['session_id'],
-                            st.session_state.spec_context,
-                            st.session_state.messages,
-                            st.session_state.current_result
-                        )
-                        st.success("✅ Saved to conversation memory")
-                    else:
-                        st.warning("⚠️ No specification to save")
-    else:
-        st.info("💡 Start by providing technical specifications in the chat above!")
-
-def render_c4_results():
-    """Render the C4 architecture generation results"""
-    st.subheader("🏗️ Generated C4 Architecture")
-    
-    if not st.session_state.current_result:
-        st.info("🤖 Generate C4 architecture by providing technical specifications in the chat above")
-        return
-    
-    result = st.session_state.current_result
-    
-    if not result.get("success"):
-        st.error(f"❌ Generation failed: {result.get('error', 'Unknown error')}")
-        return
-    
-    # Success message
-    st.success("✅ C4 Architecture generated successfully!")
-    
-    # Summary
-    with st.expander("📊 Architecture Summary", expanded=True):
-        summary = result.get("summary", "No summary available")
-        st.write(summary)
-        
-        # Statistics
-        col1, col2, col3, col4 = st.columns(4)
-        with col1:
-            st.metric("Systems", len(result.get("systems", [])))
-        with col2:
-            st.metric("Containers", len(result.get("containers", [])))
-        with col3:
-            st.metric("Components", len(result.get("components", [])))
-        with col4:
-            st.metric("Relationships", len(result.get("relationships", [])))
-    
-    # DSL Tabs
-    dsl = result.get("dsl", {})
-    tabs = st.tabs([
-        "🌐 Unified (Context+Container)", 
-        "🏢 System Context", 
-        "📦 Container", 
-        "🔧 Component", 
-        "📄 JSON Data"
-    ])
-    
-    with tabs[0]:
-        cc = dsl.get("context_container")
-        if cc:
-            st.code(cc, language="dsl")
-            st.caption("Unified Context + Container DSL")
-        else:
-            st.info("Unified DSL not available yet")
-    
-    with tabs[1]:
-        ctx = dsl.get("context")
-        if ctx:
-            st.code(ctx, language="dsl")
-            st.caption("System Context DSL")
-        else:
-            st.info("Context DSL not available")
-    
-    with tabs[2]:
-        cont = dsl.get("container")
-        if cont:
-            st.code(cont, language="dsl")
-            st.caption("Container DSL")
-        else:
-            st.info("Container DSL not available")
-    
-    with tabs[3]:
-        comp = dsl.get("component")
-        if comp:
-            st.code(comp, language="dsl")
-            st.caption("Component DSL")
-        else:
-            st.info("Component DSL not available")
-    
-    with tabs[4]:
-        st.json({
-            "systems": result.get("systems", []),
-            "containers": result.get("containers", []),
-            "components": result.get("components", []),
-            "relationships": result.get("relationships", []),
-            "external_systems": result.get("external_systems", []),
-            "missing_info": result.get("missing_info", [])
-        })
-
 def render_examples():
     """Render example technical specifications"""
     st.subheader("💡 Example Technical Specifications")
@@ -1127,13 +1590,89 @@ def render_examples():
                 st.success(f"✅ Loaded {example['title']} example")
                 st.rerun()
 
+def render_api_key_status():
+    """
+    Render API key status information in the main interface.
+    
+    Shows current API key status, source information, and setup instructions
+    if the key is missing or invalid.
+    """
+    st.markdown("---")
+    
+    # API Key Status Section
+    col1, col2 = st.columns([3, 1])
+    
+    with col1:
+        st.subheader("🔑 API Key Status")
+        
+        api_status = api_key_manager.get_api_key_status()
+        
+        if api_status["available"]:
+            if api_status["validation"]["valid"]:
+                st.success(api_key_manager.get_api_key_display_info())
+                
+                # Show key details
+                with st.expander("📊 Key Information"):
+                    col_a, col_b = st.columns(2)
+                    with col_a:
+                        st.metric("Status", "✅ Valid")
+                        st.metric("Source", ", ".join(api_status["sources"]))
+                    with col_b:
+                        st.metric("Length", f"{api_status['key_length']} chars")
+                        if api_status["key_prefix"]:
+                            st.metric("Prefix", api_status["key_prefix"])
+            else:
+                st.warning(f"⚠️ API Key Issue: {api_status['validation']['error']}")
+                st.info("Please check your API key configuration.")
+        else:
+            st.error("❌ OpenAI API Key Not Available")
+            
+            # Show setup instructions
+            with st.expander("📋 Setup Instructions", expanded=True):
+                st.markdown(api_key_manager.get_setup_instructions())
+                
+                # Quick setup options
+                st.subheader("🚀 Quick Setup")
+                
+                col_x, col_y = st.columns(2)
+                with col_x:
+                    if st.button("🔄 Refresh API Key", key="main_refresh_api"):
+                        api_key_manager.refresh_api_key()
+                        st.success("✅ API Key refreshed")
+                        st.rerun()
+                
+                with col_y:
+                    if st.button("📖 View Documentation", key="view_docs"):
+                        st.info("Check the sidebar for detailed API key management options.")
+    
+    with col2:
+        # API Key Health Indicator
+        st.subheader("🏥 Health Check")
+        
+        if check_api_key_availability():
+            st.success("✅ Healthy")
+            st.metric("Status", "Ready")
+        else:
+            st.error("❌ Unhealthy")
+            st.metric("Status", "Not Ready")
+        
+        # Quick actions
+        st.subheader("⚡ Quick Actions")
+        
+        if st.button("🔍 Check Status", key="check_status"):
+            st.rerun()
+        
+        if st.button("📋 Show Details", key="show_details"):
+            st.info("Expand the API Key Status section above for detailed information.")
+
 def main():
     """
-    Main application function for the C4 Architecture Generator Chatbot.
+    Main application function for the C4 Architecture Generator Chatbot with tab support.
     
     Sets up the Streamlit page configuration, initializes the application
     state, and renders the complete chatbot interface including:
     - Page title and configuration
+    - Tab management system
     - Session state initialization
     - Sidebar with controls
     - Main chat interface
@@ -1141,8 +1680,8 @@ def main():
     - C4 generation results
     - Examples and memory statistics
     
-    The interface is organized in a two-column layout for optimal
-    user experience and efficient use of screen space.
+    The interface now supports multiple concurrent conversations in tabs
+    for better organization and productivity.
     """
     st.set_page_config(
         page_title=APP_TITLE,
@@ -1157,39 +1696,47 @@ def main():
     # Initialize session state
     init_session_state()
     
+    # Render tab management
+    render_tab_management()
+    
     # Render sidebar
     render_sidebar()
     
-    # Main content
-    col1, col2 = st.columns([2, 1])
+    # Main content area
+    st.markdown("---")
+    
+    # API Key Status
+    render_api_key_status()
+
+    # Chat interface
+    render_chat_interface()
+    
+    # Relevant contexts (if any)
+    render_relevant_contexts()
+    
+    # Specification context
+    render_spec_context()
+    
+    # C4 Results
+    render_c4_results()
+    
+    # Examples and additional info
+    col1, col2 = st.columns([1, 1])
     
     with col1:
-        # Chat interface
-        render_chat_interface()
-        
-        # Relevant contexts (if any)
-        render_relevant_contexts()
-        
-        # Specification context
-        render_spec_context()
-        
-        # C4 Results
-        render_c4_results()
+        render_examples()
     
     with col2:
-        # Examples
-        render_examples()
-        
-        # Memory stats
         render_memory_stats()
         
-        # Current context info
-        st.subheader("📊 Context Information")
-        if st.session_state.spec_context:
-            st.info(f"📝 Specification length: {len(st.session_state.spec_context)} characters")
-            st.info(f"💬 Messages: {len(st.session_state.messages)}")
-            if st.session_state.current_result:
-                st.success("✅ C4 Architecture available")
+        # Current tab info
+        active_tab = get_active_tab()
+        st.subheader("📊 Current Tab Information")
+        st.info(f"**Active Tab:** {active_tab.title}")
+        st.info(f"📝 Specification length: {len(active_tab.spec_context)} characters")
+        st.info(f"💬 Messages: {len(active_tab.messages)}")
+        if active_tab.current_result:
+            st.success("✅ C4 Architecture available")
         else:
             st.warning("⚠️ No technical specification yet")
 

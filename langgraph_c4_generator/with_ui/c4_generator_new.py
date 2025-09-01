@@ -78,14 +78,16 @@ workspace "My Web Application" "A sample web application." {
     }
 }
 """
-
-
-
+import streamlit as st
+from openai import OpenAI
 
 # Get API key from environment variable
 api_key = os.getenv("OPENAI_API_KEY")
 if not api_key:
-    raise ValueError("OPENAI_API_KEY environment variable not set. Please set it to use OpenAI services.")
+        # Access the OpenAI API key from the secrets
+    api_key = st.secrets["OPENAI_API_KEY"]
+    if not api_key:
+        raise ValueError("OPENAI_API_KEY environment variable not set. Please set it to use OpenAI services.")
 
 # Define the state structure
 class C4State(TypedDict):
