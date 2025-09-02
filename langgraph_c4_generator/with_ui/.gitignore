@@ -1,0 +1,57 @@
+# Environment variables
+.env
+.streamlit/secrets.toml
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Memory files
+*.pkl
+*.json
+
+# Generated C4 files
+generated_c4/
+*.dsl
+architecture_summary.json
+user_experience_analysis.json
+
+# Chatbot memory
+chatbot_memory.pkl
+conversation_history.json
