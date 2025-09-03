@@ -354,6 +354,7 @@ def validate_architecture_node(state: C4State) -> C4State:
     """
     
     try:
+        llm = ChatOpenAI(model="gpt-4", api_key=api_key, temperature=0.1)
         response = llm.invoke(prompt)
         
         # Extract recommendations and improvements
