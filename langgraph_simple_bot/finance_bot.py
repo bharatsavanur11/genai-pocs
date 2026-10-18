@@ -8,24 +8,28 @@ from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph import START, MessagesState, StateGraph
 from langgraph.prebuilt import ToolNode, tools_condition
 
+from edgar_tools import EDGAR_TOOLS
 from finance_tools import FINANCE_TOOLS
+
+ALL_TOOLS = FINANCE_TOOLS + EDGAR_TOOLS
 
 SYSTEM_PROMPT = """You are an investment banking analyst assistant covering M&A, LBOs, \
 valuation (DCF, comps, precedents) and capital-markets strategy.
+- Use SEC EDGAR tools to ground answers in filings (10-K, 8-K, S-1, merger proxies) and cite the filing URL.
 - Use tools for market data and every calculation; never do arithmetic or invent figures yourself.
 - State assumptions, method, then conclusion, and flag key risks.
 - This is educational analysis, not licensed investment advice."""
 
 
 def build_graph(llm):
-    llm_with_tools = llm.bind_tools(FINANCE_TOOLS)
+    llm_with_tools = llm.bind_tools(ALL_TOOLS)
 
     def assistant(state: MessagesState):
         return {"messages": [llm_with_tools.invoke([SystemMessage(content=SYSTEM_PROMPT)] + state["messages"])]}
 
     builder = StateGraph(MessagesState)
     builder.add_node("assistant", assistant)
-    builder.add_node("tools", ToolNode(FINANCE_TOOLS))
+    builder.add_node("tools", ToolNode(ALL_TOOLS))
     builder.add_edge(START, "assistant")
     builder.add_conditional_edges("assistant", tools_condition)  # tool call -> tools, else END
     builder.add_edge("tools", "assistant")
