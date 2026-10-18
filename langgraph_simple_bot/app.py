@@ -26,6 +26,7 @@ with st.sidebar:
         "Compare AAPL, MSFT and GOOGL on EV/EBITDA and P/E",
         "Pull MSFT's last 5 years of financials from SEC and run a DCF at 9% WACC, 2.5% terminal growth",
         "Find recent 8-Ks mentioning 'tender offer' and summarise the deal terms",
+        "How is RELIANCE trading on NSE, and what are its latest announcements?",
         "LBO: 100 EBITDA, 10x entry and exit, 60% debt, 8% growth. IRR?",
     ]
     for ex in examples:
