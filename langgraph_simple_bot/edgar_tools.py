@@ -106,4 +106,67 @@ def search_sec_filings(query: str, form_type: str = "", start_date: str = "", en
     return out or [{"error": "No results"}]
 
 
-EDGAR_TOOLS = [list_sec_filings, read_sec_filing, search_sec_filings]
+# First concept with data wins; companies tag the same line item differently.
+XBRL_CONCEPTS = {
+    "revenue": ["RevenueFromContractWithCustomerExcludingAssessedTax", "Revenues", "SalesRevenueNet"],
+    "operating_income": ["OperatingIncomeLoss"],
+    "net_income": ["NetIncomeLoss"],
+    "d_and_a": ["DepreciationDepletionAndAmortization", "DepreciationAndAmortization", "Depreciation"],
+    "operating_cash_flow": ["NetCashProvidedByUsedInOperatingActivities"],
+    "capex": ["PaymentsToAcquirePropertyPlantAndEquipment", "PaymentsToAcquireProductiveAssets"],
+    "cash": ["CashAndCashEquivalentsAtCarryingValue"],
+    "long_term_debt": ["LongTermDebtNoncurrent", "LongTermDebt"],
+    "short_term_debt": ["DebtCurrent", "LongTermDebtCurrent"],
+    "equity": ["StockholdersEquity"],
+    "shares_outstanding": ["CommonStockSharesOutstanding"],
+}
+
+
+def _annual_series(facts: dict, concepts: list[str]) -> dict:
+    """{fiscal_year_end: value} from 10-K facts; full-year durations only for flow items."""
+    from datetime import date
+
+    for concept in concepts:
+        node = facts.get(concept)
+        if not node:
+            continue
+        unit = "USD" if "USD" in node["units"] else next(iter(node["units"]))
+        series = {}
+        for f in node["units"][unit]:
+            if f.get("form") not in ("10-K", "10-K/A") or f.get("fp") != "FY":
+                continue
+            if "start" in f and not 350 <= (date.fromisoformat(f["end"]) - date.fromisoformat(f["start"])).days <= 380:
+                continue
+            series[f["end"]] = f["val"]  # later filings overwrite restated values
+        if series:
+            return series
+    return {}
+
+
+@tool
+def get_sec_financials(ticker: str, years: int = 5) -> dict:
+    """Annual financials straight from SEC XBRL filings (USD): revenue, operating income,
+    net income, D&A, EBITDA (= operating income + D&A), operating cash flow, capex, free cash
+    flow (= CFO - capex), cash, debt, equity, shares. Use to build DCF/LBO inputs."""
+    found = _cik(ticker)
+    if not found:
+        return {"error": f"Unknown ticker '{ticker}'"}
+    cik, name = found
+    facts = _get(f"https://data.sec.gov/api/xbrl/companyfacts/CIK{cik}.json").json()["facts"].get("us-gaap", {})
+    series = {k: _annual_series(facts, v) for k, v in XBRL_CONCEPTS.items()}
+    ends = sorted({e for s in series.values() for e in s}, reverse=True)[:years]
+    rows = []
+    for end in ends:
+        r = {k: series[k].get(end) for k in series}
+        if r["operating_income"] is not None and r["d_and_a"] is not None:
+            r["ebitda"] = r["operating_income"] + r["d_and_a"]
+        if r["operating_cash_flow"] is not None and r["capex"] is not None:
+            r["free_cash_flow"] = r["operating_cash_flow"] - abs(r["capex"])
+        debt = [r["long_term_debt"], r["short_term_debt"]]
+        if any(d is not None for d in debt):
+            r["total_debt"] = sum(d or 0 for d in debt)
+        rows.append({"fiscal_year_end": end, **{k: v for k, v in r.items() if v is not None}})
+    return {"company": name, "currency": "USD", "annual": rows} if rows else {"error": "No XBRL data found"}
+
+
+EDGAR_TOOLS = [list_sec_filings, read_sec_filing, search_sec_filings, get_sec_financials]
