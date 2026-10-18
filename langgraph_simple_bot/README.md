@@ -33,3 +33,13 @@ debt and more from SEC XBRL filings to feed the DCF/LBO tools.
 (browser headers + session cookies), so they can break or be rate-limited without notice, and
 NSE blocks many cloud/datacenter IPs. For fundamentals use the yfinance tools with `.NS`
 symbols (e.g. `RELIANCE.NS`). For production, consider a licensed feed.
+
+## Deploy to Streamlit Community Cloud
+
+1. Go to https://share.streamlit.io → **Create app** and pick `bharatsavanur11/genai-pocs`.
+2. Branch: the branch containing this folder. Main file path: `langgraph_simple_bot/app.py`.
+3. Advanced settings → Python 3.12, and paste the values from `.streamlit/secrets.toml.example`
+   into **Secrets** (with your real key).
+4. Deploy. `requirements.txt` in this folder is installed automatically.
+
+Cloud IPs may be blocked by NSE (and occasionally Yahoo); SEC works if `SEC_USER_AGENT` is set.
